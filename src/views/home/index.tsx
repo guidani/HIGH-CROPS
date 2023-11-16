@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <View>
       <FontAwesome5 name="home" size={24} color="black" />
-      <Text> Home</Text>
+      <Text>Home</Text>
     </View>
   );
 }
