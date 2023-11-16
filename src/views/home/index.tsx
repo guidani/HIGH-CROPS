@@ -1,14 +1,15 @@
-import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
-import { Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import HomeStackRoutes from "../../routes/stack.routes";
 
-export default function Home() {
+interface Props {
+  navigation: any;
+}
+
+export default function Home({ navigation }: Props) {
   const theme = useTheme();
   return (
-    <View>
-      <FontAwesome5 name="home" size={24} color="black" />
-      <Text>Home</Text>
-    </View>
+ 
+    <HomeStackRoutes />
   );
 }

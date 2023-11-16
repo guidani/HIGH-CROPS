@@ -4,9 +4,9 @@ import { Text, View } from "react-native";
 
 export default function Configurations() {
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center'}}>
       <FontAwesome name="gear" size={24} color="black" />
-      <Text>Configurations</Text>
+      <Text>Configurações</Text>
     </View>
   );
 }
