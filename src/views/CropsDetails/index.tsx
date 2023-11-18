@@ -4,9 +4,11 @@ import { Button } from "react-native-paper";
 
 interface Props {
   navigation: any;
+  route: any;
 }
 
-export default function CropDetails({ navigation }: Props) {
+export default function CropsDetails({ route, navigation }: Props) {
+  const { itemId } = route.params;
   return (
     <View
       style={{
@@ -17,6 +19,7 @@ export default function CropDetails({ navigation }: Props) {
       }}
     >
       <Text>CropDetails</Text>
+      <Text>ID: {JSON.stringify(itemId)}</Text>
       <Button onPress={() => navigation.navigate("StartPage")}>Go back</Button>
     </View>
   );
