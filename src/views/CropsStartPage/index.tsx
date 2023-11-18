@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { Button, FAB, IconButton, List, Text } from "react-native-paper";
+import { FAB, IconButton, List, Text } from "react-native-paper";
 import { CropType } from "../../types/CropType";
 
 const data: CropType[] = [
@@ -79,12 +79,6 @@ export default function CropStartPage({ navigation }: Props) {
         justifyContent: "start",
       }}
     >
-      <Button onPress={() => navigation.navigate("CropsNewCrop")}>
-        New Crop
-      </Button>
-      <Button onPress={() => navigation.navigate("CropsDetails")}>
-        Detalhes
-      </Button>
       {crops.map((c) => {
         return (
           <List.Item

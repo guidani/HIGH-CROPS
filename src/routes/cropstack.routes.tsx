@@ -11,7 +11,7 @@ export default function CropsStackRoutes() {
         name="CropsStartPage"
         component={CropStartPage}
         options={{
-          title: "Início",
+          title: "Crops",
         }}
       />
       <Stack.Screen
