@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
-import { FAB, IconButton, List, Text } from "react-native-paper";
+import { FlatList, View } from "react-native";
+import { Divider, FAB, IconButton, List, Text } from "react-native-paper";
 import { CropType } from "../../types/CropType";
 
 const data: CropType[] = [
@@ -29,6 +29,70 @@ const data: CropType[] = [
     umidadeMax: 100,
     umidadeMin: 0,
   },
+  {
+    id: "e",
+    name: "Batata",
+    temperaturaMax: 99,
+    temperaturaMin: 0,
+    umidadeMax: 100,
+    umidadeMin: 0,
+  },
+  {
+    id: "f",
+    name: "Batata",
+    temperaturaMax: 99,
+    temperaturaMin: 0,
+    umidadeMax: 100,
+    umidadeMin: 0,
+  },
+  {
+    id: "g",
+    name: "Batata",
+    temperaturaMax: 99,
+    temperaturaMin: 0,
+    umidadeMax: 100,
+    umidadeMin: 0,
+  },
+  {
+    id: "h",
+    name: "Batata",
+    temperaturaMax: 99,
+    temperaturaMin: 0,
+    umidadeMax: 100,
+    umidadeMin: 0,
+  },
+  {
+    id: "i",
+    name: "Batata",
+    temperaturaMax: 99,
+    temperaturaMin: 0,
+    umidadeMax: 100,
+    umidadeMin: 0,
+  },
+  {
+    id: "j",
+    name: "Batata",
+    temperaturaMax: 99,
+    temperaturaMin: 0,
+    umidadeMax: 100,
+    umidadeMin: 0,
+  },
+  {
+    id: "k",
+    name: "Batata",
+    temperaturaMax: 99,
+    temperaturaMin: 0,
+    umidadeMax: 100,
+    umidadeMin: 0,
+  },
+  {
+    id: "cl",
+    name: "Batata",
+    temperaturaMax: 99,
+    temperaturaMin: 0,
+    umidadeMax: 100,
+    umidadeMin: 0,
+  },
 ];
 
 interface Props {
@@ -42,66 +106,51 @@ export default function CropStartPage({ navigation }: Props) {
     setCrops(data);
   }, [crops]);
 
-  if (crops?.length == 0 || crops == null) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#ffffff",
-          alignItems: "center",
-          justifyContent: "start",
-        }}
-      >
-        <Text variant="bodyLarge" style={{ paddingHorizontal: 10 }}>
-          Nada encontrado. Adicione uma horta pressionando o botão abaixo.
-        </Text>
-        {/* TODO - adicionar rota */}
-        <FAB
-          icon={"plus"}
-          onPress={() => navigation.navigate("CropsNewCrop")}
-          style={{
-            position: "absolute",
-            margin: 16,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "green",
-          }}
-        />
-      </View>
-    );
-  }
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: "#ffffff",
-        alignItems: "center",
+        alignItems: "start",
         justifyContent: "start",
       }}
     >
-      {crops.map((c) => {
-        return (
-          <List.Item
-            key={c.id}
-            title={c.name}
-            right={() => (
-              <IconButton
-                icon={(props) => (
-                  <FontAwesome {...props} name="gear" size={24} color="black" />
-                )}
-                size={20}
-                onPress={() =>
-                  navigation.navigate("CropsDetails", {
-                    itemId: c.id,
-                  })
-                }
-              />
-            )}
-          />
-        );
-      })}
+      <FlatList
+        data={data}
+        ItemSeparatorComponent={() => <Divider />}
+        ListEmptyComponent={() => (
+          <Text variant="bodyLarge" style={{ paddingHorizontal: 10 }}>
+            Nada encontrado. Adicione uma horta pressionando o botão abaixo.
+          </Text>
+        )}
+        renderItem={({ item }) => {
+          return (
+            <List.Item
+              key={item.id}
+              title={item.name}
+              right={() => (
+                <IconButton
+                  icon={(props) => (
+                    <FontAwesome
+                      {...props}
+                      name="gear"
+                      size={24}
+                      color="black"
+                    />
+                  )}
+                  size={20}
+                  onPress={() =>
+                    navigation.navigate("CropsDetails", {
+                      itemId: item.id,
+                    })
+                  }
+                />
+              )}
+            />
+          );
+        }}
+      />
 
-      {/* TODO - adicionar rota */}
       <FAB
         icon={"plus"}
         onPress={() => navigation.navigate("CropsNewCrop")}
