@@ -3,7 +3,7 @@ import { onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { List, Text } from "react-native-paper";
-import { rtdb } from "../../services/firebaseService";
+import { rtdb } from "../../services/firebaseConfig";
 
 interface Props {
   navigation: any;
@@ -11,6 +11,7 @@ interface Props {
 
 export default function StartPage({ navigation }: Props) {
   const [umidade, setUmidade] = useState<string | number | null>(null);
+
   useEffect(() => {
     const unsubscribe = onValue(ref(rtdb, "umidade"), (snapshot) => {
       const val = snapshot.val();

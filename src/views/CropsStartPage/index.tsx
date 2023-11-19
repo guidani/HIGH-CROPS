@@ -1,12 +1,22 @@
 import { FontAwesome } from "@expo/vector-icons";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
-import { Divider, FAB, IconButton, List, Text } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Divider,
+  FAB,
+  IconButton,
+  List,
+  MD2Colors,
+  Text,
+} from "react-native-paper";
+import { db } from "../../services/firebaseConfig";
 import { CropType } from "../../types/CropType";
 
 const data: CropType[] = [
   {
-    id: "a",
+    ownerId: "a",
     name: "Arroz",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -14,7 +24,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "b",
+    ownerId: "b",
     name: "Feijão",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -22,7 +32,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "c",
+    ownerId: "c",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -30,7 +40,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "e",
+    ownerId: "e",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -38,7 +48,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "f",
+    ownerId: "f",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -46,7 +56,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "g",
+    ownerId: "g",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -54,7 +64,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "h",
+    ownerId: "h",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -62,7 +72,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "i",
+    ownerId: "i",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -70,7 +80,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "j",
+    ownerId: "j",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -78,7 +88,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "k",
+    ownerId: "k",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -86,7 +96,7 @@ const data: CropType[] = [
     umidadeMin: 0,
   },
   {
-    id: "cl",
+    ownerId: "cl",
     name: "Batata",
     temperaturaMax: 99,
     temperaturaMin: 0,
@@ -101,10 +111,55 @@ interface Props {
 
 export default function CropStartPage({ navigation }: Props) {
   const [crops, setCrops] = useState<CropType[] | null>(null);
+  const [loading, setLoading] = useState<boolean | null>(false);
+
+  // async function fetchData() {
+  //   setLoading(true);
+  //   const resp = await getCrops();
+  //   setCrops([...resp]);
+  //   setLoading(false);
+  // }
+
+  function getData() {
+    const items: CropType[] = [];
+    const cropsRef = collection(db, "Crops");
+    const q = query(cropsRef);
+    return onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        items?.push({
+          id: doc.id,
+          name: doc.data()?.name,
+          ownerId: doc.data()?.ownerId,
+          temperaturaMax: doc.data()?.temperaturaMax,
+          temperaturaMin: doc.data()?.temperaturaMin,
+          umidadeMax: doc.data()?.umidadeMax,
+          umidadeMin: doc.data()?.umidadeMin,
+        });
+        setCrops(items);
+      });
+    });
+  }
 
   useEffect(() => {
-    setCrops(data);
-  }, [crops]);
+    // fetchData();
+    const unsub = getData();
+    return () => unsub();
+  }, []);
+
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#ffffff",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator animating={true} color={MD2Colors.green400} />
+      </View>
+    );
+  }
 
   return (
     <View
@@ -116,7 +171,7 @@ export default function CropStartPage({ navigation }: Props) {
       }}
     >
       <FlatList
-        data={data}
+        data={crops}
         ItemSeparatorComponent={() => <Divider />}
         ListEmptyComponent={() => (
           <Text variant="bodyLarge" style={{ paddingHorizontal: 10 }}>
@@ -126,7 +181,7 @@ export default function CropStartPage({ navigation }: Props) {
         renderItem={({ item }) => {
           return (
             <List.Item
-              key={item.id}
+              key={item.ownerId}
               title={item.name}
               right={() => (
                 <IconButton
