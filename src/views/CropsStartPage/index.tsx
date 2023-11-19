@@ -113,18 +113,12 @@ export default function CropStartPage({ navigation }: Props) {
   const [crops, setCrops] = useState<CropType[] | null>(null);
   const [loading, setLoading] = useState<boolean | null>(false);
 
-  // async function fetchData() {
-  //   setLoading(true);
-  //   const resp = await getCrops();
-  //   setCrops([...resp]);
-  //   setLoading(false);
-  // }
-
-  function getData() {
-    const items: CropType[] = [];
+  function getCropsRealTime() {
     const cropsRef = collection(db, "Crops");
     const q = query(cropsRef);
     return onSnapshot(q, (querySnapshot) => {
+      setLoading(true);
+      const items: CropType[] = [];
       querySnapshot.forEach((doc) => {
         items?.push({
           id: doc.id,
@@ -137,12 +131,13 @@ export default function CropStartPage({ navigation }: Props) {
         });
         setCrops(items);
       });
+      setLoading(false);
     });
   }
 
   useEffect(() => {
     // fetchData();
-    const unsub = getData();
+    const unsub = getCropsRealTime();
     return () => unsub();
   }, []);
 
