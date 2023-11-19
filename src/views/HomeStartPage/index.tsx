@@ -4,21 +4,23 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { List, Text } from "react-native-paper";
 import { rtdb } from "../../services/firebaseConfig";
+import useGetUmidade from "../../hooks/useGetUmidade";
 
 interface Props {
   navigation: any;
 }
 
 export default function StartPage({ navigation }: Props) {
-  const [umidade, setUmidade] = useState<string | number | null>(null);
+  const {umidade} = useGetUmidade()
+  // const [umidade, setUmidade] = useState<string | number | null>(null);
 
-  useEffect(() => {
-    const unsubscribe = onValue(ref(rtdb, "umidade"), (snapshot) => {
-      const val = snapshot.val();
-      setUmidade(val);
-    });
-    return () => unsubscribe();
-  }, [umidade]);
+  // useEffect(() => {
+  //   const unsubscribe = onValue(ref(rtdb, "umidade"), (snapshot) => {
+  //     const val = snapshot.val();
+  //     setUmidade(val);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
   return (
     <View
       style={{

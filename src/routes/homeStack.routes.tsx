@@ -7,7 +7,13 @@ const Stack = createStackNavigator();
 
 export default function HomeStackRoutes() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#7CD8A4",
+        },
+      }}
+    >
       <Stack.Screen
         name="StartPage"
         component={StartPage}
