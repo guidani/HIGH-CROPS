@@ -1,6 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { collection, onSnapshot, query } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FlatList, View } from "react-native";
 import {
   ActivityIndicator,
@@ -11,7 +10,7 @@ import {
   MD2Colors,
   Text,
 } from "react-native-paper";
-import { db } from "../../services/firebaseConfig";
+import useGetCrops from "../../hooks/useGetCrops";
 import { CropType } from "../../types/CropType";
 
 const data: CropType[] = [
@@ -110,36 +109,7 @@ interface Props {
 }
 
 export default function CropStartPage({ navigation }: Props) {
-  const [crops, setCrops] = useState<CropType[] | null>(null);
-  const [loading, setLoading] = useState<boolean | null>(false);
-
-  function getCropsRealTime() {
-    const cropsRef = collection(db, "Crops");
-    const q = query(cropsRef);
-    return onSnapshot(q, (querySnapshot) => {
-      setLoading(true);
-      const items: CropType[] = [];
-      querySnapshot.forEach((doc) => {
-        items?.push({
-          id: doc.id,
-          name: doc.data()?.name,
-          ownerId: doc.data()?.ownerId,
-          temperaturaMax: doc.data()?.temperaturaMax,
-          temperaturaMin: doc.data()?.temperaturaMin,
-          umidadeMax: doc.data()?.umidadeMax,
-          umidadeMin: doc.data()?.umidadeMin,
-        });
-        setCrops(items);
-      });
-      setLoading(false);
-    });
-  }
-
-  useEffect(() => {
-    // fetchData();
-    const unsub = getCropsRealTime();
-    return () => unsub();
-  }, []);
+  const { crops, loading } = useGetCrops();
 
   if (loading) {
     return (
