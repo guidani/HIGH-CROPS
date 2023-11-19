@@ -9,6 +9,7 @@ import {
   List,
   MD2Colors,
   Text,
+  useTheme,
 } from "react-native-paper";
 import useGetCrops from "../../hooks/useGetCrops";
 import { CropType } from "../../types/CropType";
@@ -109,6 +110,7 @@ interface Props {
 }
 
 export default function CropStartPage({ navigation }: Props) {
+  const theme = useTheme();
   const { crops, loading } = useGetCrops();
 
   if (loading) {
@@ -116,7 +118,7 @@ export default function CropStartPage({ navigation }: Props) {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#ffffff",
+          backgroundColor: theme.colors.background,
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -130,7 +132,7 @@ export default function CropStartPage({ navigation }: Props) {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#ffffff",
+        backgroundColor: theme.colors.background,
         alignItems: "start",
         justifyContent: "start",
       }}
@@ -179,7 +181,7 @@ export default function CropStartPage({ navigation }: Props) {
           margin: 16,
           right: 0,
           bottom: 0,
-          backgroundColor: "green",
+          backgroundColor: theme.colors.primary,
         }}
       />
     </View>

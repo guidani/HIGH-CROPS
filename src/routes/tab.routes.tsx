@@ -1,6 +1,7 @@
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
+import { useTheme } from "react-native-paper";
 import Configurations from "../views/Configurations";
 import CropsStackRoutes from "./cropStack.routes";
 import HomeStackRoutes from "./homeStack.routes";
@@ -8,11 +9,12 @@ import HomeStackRoutes from "./homeStack.routes";
 const Tab = createBottomTabNavigator();
 
 export default function TabRoutes() {
+  const theme = useTheme();
   return (
     <Tab.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#7CD8A4",
+          backgroundColor: theme.colors.primary,
         },
       }}
     >

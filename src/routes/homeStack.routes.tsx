@@ -2,15 +2,17 @@ import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import StartPage from "../views/HomeStartPage";
+import { useTheme } from "react-native-paper";
 
 const Stack = createStackNavigator();
 
 export default function HomeStackRoutes() {
+  const theme = useTheme()
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#7CD8A4",
+          backgroundColor: theme.colors.primary,
         },
       }}
     >

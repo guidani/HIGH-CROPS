@@ -6,10 +6,10 @@ import TabRoutes from "./tab.routes";
 
 export default function Routes() {
   return (
-    <NavigationContainer>
-      <PaperProvider theme={PaperTheme}>
+    <PaperProvider theme={PaperTheme}>
+      <NavigationContainer>
         <TabRoutes />
-      </PaperProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 
 interface Props {
   navigation: any;
@@ -8,12 +8,13 @@ interface Props {
 }
 
 export default function CropsDetails({ route, navigation }: Props) {
+  const theme = useTheme();
   const { itemId } = route.params;
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: "#ffffff",
+        backgroundColor: theme.colors.background,
         alignItems: "center",
         justifyContent: "center",
       }}

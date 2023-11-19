@@ -1,9 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { onValue, ref } from "firebase/database";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View } from "react-native";
-import { List, Text } from "react-native-paper";
-import { rtdb } from "../../services/firebaseConfig";
+import { List, Text, useTheme } from "react-native-paper";
 import useGetUmidade from "../../hooks/useGetUmidade";
 
 interface Props {
@@ -11,21 +9,13 @@ interface Props {
 }
 
 export default function StartPage({ navigation }: Props) {
-  const {umidade} = useGetUmidade()
-  // const [umidade, setUmidade] = useState<string | number | null>(null);
-
-  // useEffect(() => {
-  //   const unsubscribe = onValue(ref(rtdb, "umidade"), (snapshot) => {
-  //     const val = snapshot.val();
-  //     setUmidade(val);
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
+  const { umidade } = useGetUmidade();
+  const theme = useTheme();
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: "#ffffff",
+        backgroundColor: theme.colors.background,
         alignItems: "start",
         justifyContent: "start",
       }}

@@ -1,15 +1,17 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import { useTheme } from "react-native-paper";
 import CropsDetails from "../views/CropsDetails";
 import CropsNewCrop from "../views/CropsNewCrop";
 import CropStartPage from "../views/CropsStartPage";
 const Stack = createStackNavigator();
 export default function CropsStackRoutes() {
+  const theme = useTheme();
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#7CD8A4",
+          backgroundColor: theme.colors.primary,
         },
       }}
     >

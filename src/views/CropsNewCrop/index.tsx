@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
-import { FAB, TextInput } from "react-native-paper";
+import { FAB, TextInput, useTheme } from "react-native-paper";
 
 interface Props {
   navigation: any;
 }
 
 export default function CropsNewCrop({ navigation }: Props) {
+  const theme = useTheme();
   const [name, setName] = useState<string | undefined>();
   const [temperaturaMax, setTemperaturaMax] = useState<string | undefined>();
   const [temperaturaMin, setTemperaturaMin] = useState<string | undefined>();
@@ -22,7 +23,7 @@ export default function CropsNewCrop({ navigation }: Props) {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#ffffff",
+        backgroundColor: theme.colors.background,
         alignItems: "start",
         justifyContent: "start",
         gap: 4,
@@ -71,7 +72,7 @@ export default function CropsNewCrop({ navigation }: Props) {
           margin: 16,
           right: 0,
           bottom: 0,
-          backgroundColor: "green",
+          backgroundColor: theme.colors.primary,
         }}
       />
     </View>
