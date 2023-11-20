@@ -2,7 +2,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { View } from "react-native";
 import { List, Text, useTheme } from "react-native-paper";
+import useGetTemperatura from "../../hooks/useGetTemperatura";
 import useGetUmidade from "../../hooks/useGetUmidade";
+import useGetUmidadeAr from "../../hooks/useGetUmidadeAr";
 
 interface Props {
   navigation: any;
@@ -10,6 +12,8 @@ interface Props {
 
 export default function StartPage({ navigation }: Props) {
   const { umidade } = useGetUmidade();
+  const { umidadeAr } = useGetUmidadeAr();
+  const { temperatura } = useGetTemperatura();
   const theme = useTheme();
   return (
     <View
@@ -29,7 +33,7 @@ export default function StartPage({ navigation }: Props) {
         Visão geral
       </Text>
       <List.Item
-        title="Umidade"
+        title="Umidade do Solo"
         style={{
           paddingHorizontal: 10,
         }}
@@ -54,11 +58,22 @@ export default function StartPage({ navigation }: Props) {
             color="black"
           />
         )}
-        right={(props) => <Text>{umidade}</Text>}
+        right={(props) => <Text>{temperatura}</Text>}
       />
-      {/* <Button onPress={() => navigation.navigate("CropDetails")}>
-        Go to details
-      </Button> */}
+      <List.Item
+        title="Umidade do Ar"
+        style={{
+          paddingHorizontal: 10,
+        }}
+        left={(props) => (
+          <MaterialCommunityIcons
+            name="water-percent"
+            size={24}
+            color="black"
+          />
+        )}
+        right={(props) => <Text>{umidadeAr}</Text>}
+      />
     </View>
   );
 }
