@@ -75,8 +75,8 @@ export default function CropsNewCrop({ navigation }: Props) {
         style={{
           flex: 1,
           gap: 4,
-          paddingHorizontal: 4,
-          paddingVertical: 4,
+          padding: 12,
+          
         }}
       >
         <TextInput
@@ -87,7 +87,7 @@ export default function CropsNewCrop({ navigation }: Props) {
           style={{ marginBottom: 4 }}
         />
         <TextInput
-          label={"Umidade Máxima"}
+          label={"Umidade do solo máxima"}
           value={umidadeMax}
           keyboardType="numeric"
           onChangeText={(umidadeMax) => setUmidadeMax(umidadeMax)}
@@ -95,7 +95,7 @@ export default function CropsNewCrop({ navigation }: Props) {
           style={{ marginBottom: 4 }}
         />
         <TextInput
-          label={"Umidade Mínima"}
+          label={"Umidade do solo mínima"}
           value={umidadeMin}
           keyboardType="numeric"
           onChangeText={(umidadeMin) => setUmidadeMin(umidadeMin)}
