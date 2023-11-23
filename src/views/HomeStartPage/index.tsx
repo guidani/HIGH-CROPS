@@ -15,6 +15,7 @@ export default function StartPage({ navigation }: Props) {
   const { umidadeAr } = useGetUmidadeAr();
   const { temperatura } = useGetTemperatura();
   const theme = useTheme();
+
   return (
     <View
       style={{

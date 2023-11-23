@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 interface Props {
   navigation: any;
   route: any;
 }
-
+// TODO - finalizar a página
 export default function CropsDetails({ route, navigation }: Props) {
   const theme = useTheme();
   const { itemId } = route.params;
@@ -21,7 +21,6 @@ export default function CropsDetails({ route, navigation }: Props) {
     >
       <Text>CropDetails</Text>
       <Text>ID: {JSON.stringify(itemId)}</Text>
-      <Button onPress={() => navigation.navigate("StartPage")}>Go back</Button>
     </View>
   );
 }
