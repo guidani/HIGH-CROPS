@@ -16,11 +16,6 @@ interface Resp {
 
 export default async function UpdateHortaConfig(item: Resp) {
   try {
-    console.log(
-      "🚀 ~ file: updateHortaConfig.ts:18 ~ UpdateHortaConfig ~ item:",
-      item
-    );
-
     const hortaRef: DocumentReference<DocumentData, Resp> = doc(
       db,
       "horta",
