@@ -45,7 +45,8 @@ export default function CropsDetails({ route, navigation }: Props) {
       setPortalSnackbarVisible(true);
       return;
     }
-    return await UpdateCrop(
+    setIsLoading(true);
+    const resp = await UpdateCrop(
       {
         name: name,
         temperaturaMax: temperaturaMax,
@@ -55,6 +56,14 @@ export default function CropsDetails({ route, navigation }: Props) {
       },
       itemId
     );
+    setIsLoading(false);
+    if (resp) {
+      setSuccessOnSave(true);
+      setPortalSnackbarVisible(true);
+    } else {
+      setErrorOnSave(true);
+      setPortalSnackbarVisible(true);
+    }
   }
 
   async function getData() {

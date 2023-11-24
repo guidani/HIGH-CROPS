@@ -21,5 +21,8 @@ export default async function UpdateCrop(crop: CropType, id: string) {
       umidadeMax: crop.umidadeMax,
       umidadeMin: crop.umidadeMin,
     });
-  } catch (error) {}
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
