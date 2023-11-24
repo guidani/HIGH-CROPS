@@ -1,3 +1,4 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
@@ -76,9 +77,12 @@ export default function CropsNewCrop({ navigation }: Props) {
           flex: 1,
           gap: 4,
           padding: 12,
-          
         }}
       >
+        <View style={{ flexDirection: "row", gap: 4, padding: 12 }}>
+          <FontAwesome5 name="leaf" size={24} color="green" />
+          <Text variant="bodyLarge">Adicione uma nova horta.</Text>
+        </View>
         <TextInput
           label={"Nome"}
           value={name}

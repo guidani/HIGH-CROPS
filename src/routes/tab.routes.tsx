@@ -12,7 +12,9 @@ export default function TabRoutes() {
   const theme = useTheme();
   return (
     <Tab.Navigator
+    
       screenOptions={{
+        headerTitleAlign: 'center',
         headerStyle: {
           backgroundColor: theme.colors.primary,
         },
@@ -26,6 +28,7 @@ export default function TabRoutes() {
             <FontAwesome5 name="home" size={24} color="black" />
           ),
           headerShown: false,
+          tabBarLabel: "Início",
         }}
       />
       <Tab.Screen
@@ -33,16 +36,19 @@ export default function TabRoutes() {
         component={CropsStackRoutes}
         options={{
           headerShown: false,
+          tabBarLabel: "Hortas",
           tabBarIcon: () => (
             <FontAwesome5 name="leaf" size={24} color="black" />
           ),
         }}
       />
       <Tab.Screen
-        name="Configurações"
+        name="Configs"
         component={Configurations}
         options={{
           tabBarIcon: () => <FontAwesome name="gear" size={24} color="black" />,
+          tabBarLabel: "Configurações",
+          headerTitle: "Configurações",
         }}
       />
     </Tab.Navigator>

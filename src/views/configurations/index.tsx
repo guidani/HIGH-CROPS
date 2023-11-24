@@ -1,8 +1,9 @@
 import { FontAwesome } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import {
+  Text,
   ActivityIndicator,
   Chip,
   Divider,
@@ -130,7 +131,7 @@ export default function Configurations() {
       >
         <View style={{ flexDirection: "row", gap: 4, padding: 12 }}>
           <FontAwesome name="gear" size={24} color="black" />
-          <Text>Configure os parâmetros da sua horta.</Text>
+          <Text variant="bodyLarge">Configure os parâmetros da sua horta.</Text>
         </View>
 
         <Divider />

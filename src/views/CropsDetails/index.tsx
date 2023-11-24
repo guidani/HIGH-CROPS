@@ -1,11 +1,12 @@
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import {
   ActivityIndicator,
   FAB,
   Portal,
   Snackbar,
+  Text,
   TextInput,
   useTheme,
 } from "react-native-paper";
@@ -128,6 +129,12 @@ export default function CropsDetails({ route, navigation }: Props) {
           padding: 12,
         }}
       >
+        <View style={{ flexDirection: "row", gap: 4, padding: 12 }}>
+          <FontAwesome5 name="eye" size={24} color="black" />
+          <Text variant="bodyLarge">
+            Veja e configure os parâmetros da hortaliça.
+          </Text>
+        </View>
         <TextInput
           label={"Nome"}
           value={name}

@@ -1,4 +1,4 @@
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import { FlatList, View } from "react-native";
 import {
@@ -45,6 +45,20 @@ export default function CropStartPage({ navigation }: Props) {
         justifyContent: "start",
       }}
     >
+      <View
+        style={{
+          flexDirection: "row",
+          gap: 4,
+          padding: 12,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <FontAwesome5 name="leaf" size={24} color="green" />
+        <Text variant="bodyLarge">Estas são suas hortaliças.</Text>
+        <FontAwesome5 name="leaf" size={24} color="green" />
+      </View>
+      <Divider />
       <FlatList
         data={crops}
         ItemSeparatorComponent={() => <Divider />}

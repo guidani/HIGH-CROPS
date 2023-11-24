@@ -21,6 +21,7 @@ export default function HomeStackRoutes() {
         component={StartPage}
         options={{
           title: "Início",
+          headerTitleAlign: 'center'
         }}
       />
     </Stack.Navigator>

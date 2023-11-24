@@ -20,6 +20,8 @@ export default function CropsStackRoutes() {
         component={CropStartPage}
         options={{
           title: "Crops",
+          headerTitle: "Hortaliças",
+          headerTitleAlign: "center",
         }}
       />
       <Stack.Screen
@@ -27,6 +29,7 @@ export default function CropsStackRoutes() {
         component={CropsNewCrop}
         options={{
           title: "Nova hortaliça",
+          headerTitleAlign: "center",
         }}
       />
       <Stack.Screen
@@ -34,6 +37,7 @@ export default function CropsStackRoutes() {
         component={CropsDetails}
         options={{
           title: "Detalhes da hortaliça",
+          headerTitleAlign: "center",
         }}
       />
     </Stack.Navigator>

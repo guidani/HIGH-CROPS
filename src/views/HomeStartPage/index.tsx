@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { View } from "react-native";
-import { List, Text, useTheme } from "react-native-paper";
+import { Divider, List, Text, useTheme } from "react-native-paper";
 import useGetTemperatura from "../../hooks/useGetTemperatura";
 import useGetUmidade from "../../hooks/useGetUmidade";
 import useGetUmidadeAr from "../../hooks/useGetUmidadeAr";
@@ -25,14 +25,20 @@ export default function StartPage({ navigation }: Props) {
         justifyContent: "start",
       }}
     >
-      <Text
-        variant="titleMedium"
+      <View
         style={{
-          paddingHorizontal: 10,
+          flexDirection: "row",
+          gap: 4,
+          padding: 12,
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        Visão geral
-      </Text>
+        {/* <FontAwesome5 name="leaf" size={24} color="green" /> */}
+        <Text variant="bodyLarge">Visão Geral</Text>
+        {/* <FontAwesome5 name="leaf" size={24} color="green" /> */}
+      </View>
+      <Divider/>
       <List.Item
         title="Umidade do Solo"
         style={{
