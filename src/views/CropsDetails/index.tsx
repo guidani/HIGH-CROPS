@@ -1,5 +1,6 @@
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
   ActivityIndicator,
@@ -10,6 +11,7 @@ import {
   TextInput,
   useTheme,
 } from "react-native-paper";
+import DeleteCropFromDatabase from "../../services/deleteCrop";
 import GetSingleCrop from "../../services/getSingleCrop";
 import UpdateCrop from "../../services/updateCrop";
 import { IconProps } from "../../types/IconProps";
@@ -20,6 +22,7 @@ interface Props {
 }
 // TODO - finalizar a página
 export default function CropsDetails({ route, navigation }: Props) {
+  const navigat = useNavigation();
   const { itemId } = route.params;
   const theme = useTheme();
   const [name, setName] = useState<string | undefined>("");
@@ -38,6 +41,7 @@ export default function CropsDetails({ route, navigation }: Props) {
   const [successOnSave, setSuccessOnSave] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorOnLoad, setErrorOnLoad] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   async function updateCropToDataBase() {
     if (!name) {
@@ -84,6 +88,34 @@ export default function CropsDetails({ route, navigation }: Props) {
       setErrorOnLoad(true);
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  const handleExlcuirCrop = useCallback(async () => {
+    setIsLoading(true);
+    const resp = await DeleteCropFromDatabase(itemId);
+    setIsLoading(false);
+    if (resp) {
+      setIsDeleted(true);
+      setPortalSnackbarVisible(true);
+      navigat.goBack();
+    } else {
+      setIsDeleted(false);
+      setPortalSnackbarVisible(true);
+    }
+  }, [navigat]);
+
+  async function deleteCropFromDatabase() {
+    setIsLoading(true);
+    const resp = await DeleteCropFromDatabase(itemId);
+    setIsLoading(false);
+    if (resp) {
+      setIsDeleted(true);
+      setPortalSnackbarVisible(true);
+      return () => navigation.goBack();
+    } else {
+      setIsDeleted(false);
+      setPortalSnackbarVisible(true);
     }
   }
 
@@ -186,6 +218,20 @@ export default function CropsDetails({ route, navigation }: Props) {
       </ScrollView>
       <FAB
         icon={(props: IconProps & { color: string }) => (
+          <FontAwesome name="trash" size={24} color="white" />
+        )}
+        onPress={() => handleExlcuirCrop()}
+        loading={isLoading ? true : false}
+        style={{
+          position: "absolute",
+          margin: 16,
+          left: 0,
+          bottom: 0,
+          backgroundColor: theme.colors.error,
+        }}
+      />
+      <FAB
+        icon={(props: IconProps & { color: string }) => (
           <FontAwesome name="save" size={24} color="black" />
         )}
         onPress={() => updateCropToDataBase()}
@@ -223,6 +269,9 @@ export default function CropsDetails({ route, navigation }: Props) {
           </Text>
           <Text variant="bodyMedium" style={{ color: "#FFFFFF" }}>
             {successOnSave ? "Salvo com sucesso." : ""}
+          </Text>
+          <Text variant="bodyMedium" style={{ color: "#FFFFFF" }}>
+            {isDeleted ? "Deletado com sucesso." : ""}
           </Text>
         </Snackbar>
       </Portal>
