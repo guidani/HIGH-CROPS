@@ -2,18 +2,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { View } from "react-native";
 import { Divider, List, Text, useTheme } from "react-native-paper";
-import useGetTemperatura from "../../hooks/useGetTemperatura";
-import useGetUmidade from "../../hooks/useGetUmidade";
-import useGetUmidadeAr from "../../hooks/useGetUmidadeAr";
+import UseFirebaseDatabase from "../../hooks/useFirebaseDatabase";
 
 interface Props {
   navigation: any;
 }
 
 export default function StartPage({ navigation }: Props) {
-  const { umidade } = useGetUmidade();
-  const { umidadeAr } = useGetUmidadeAr();
-  const { temperatura } = useGetTemperatura();
+  // const { temperatura } = useGetTemperatura();
+  const { umidade, umidadeAr, temperatura } = UseFirebaseDatabase();
   const theme = useTheme();
 
   return (
