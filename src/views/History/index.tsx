@@ -28,7 +28,7 @@ export default function History() {
         <Text variant="bodyLarge">Visão Geral</Text>
       </View>
       <Divider />
-      <Text>History</Text>
+      <Text variant="bodyLarge">Histórico de irrigações</Text>
     </View>
   );
 }

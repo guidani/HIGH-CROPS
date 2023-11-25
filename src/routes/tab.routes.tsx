@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import Configurations from "../views/Configurations";
+import History from "../views/History";
 import CropsStackRoutes from "./cropStack.routes";
 import HomeStackRoutes from "./homeStack.routes";
-import History from "../views/History";
 
 const Tab = createBottomTabNavigator();
 
@@ -13,9 +13,8 @@ export default function TabRoutes() {
   const theme = useTheme();
   return (
     <Tab.Navigator
-    
       screenOptions={{
-        headerTitleAlign: 'center',
+        headerTitleAlign: "center",
         headerStyle: {
           backgroundColor: theme.colors.primary,
         },
@@ -44,11 +43,13 @@ export default function TabRoutes() {
         }}
       />
       <Tab.Screen
-      name="History"
-      component={History}
-      options={{
-        tabBarIcon: () => <FontAwesome name=""/>
-      }}
+        name="History"
+        component={History}
+        options={{
+          tabBarIcon: () => (
+            <FontAwesome name="history" size={24} color="black" />
+          ),
+        }}
       />
       <Tab.Screen
         name="Configs"
