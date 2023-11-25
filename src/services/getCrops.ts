@@ -25,7 +25,7 @@ export default async function getCrops(): Promise<CropType[]> {
         umidadeMin: doc.data().umidadeMin,
       };
       crops.push(item);
-      console.log("Doc id = ", doc.id, " + Doc Data = ", doc.data());
+      
     }
   );
   return crops;

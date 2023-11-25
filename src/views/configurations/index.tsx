@@ -46,7 +46,6 @@ export default function Configurations() {
       const resp = await GetInitialHortaConfig();
 
       if (!resp) {
-        //console.log("Nada");
         setIsNewItem(true);
         return;
       }

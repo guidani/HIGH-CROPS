@@ -15,7 +15,6 @@ export default function History() {
   const theme = useTheme;
   const navigation = useNavigation;
   const { history, loading } = useGetHistory();
-  console.log(JSON.stringify(history));
 
   if (loading) {
     return (
