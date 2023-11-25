@@ -21,8 +21,8 @@ export default function StartPage({ navigation }: Props) {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        alignItems: "start",
-        justifyContent: "start",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
       }}
     >
       <View
@@ -34,11 +34,9 @@ export default function StartPage({ navigation }: Props) {
           justifyContent: "center",
         }}
       >
-        {/* <FontAwesome5 name="leaf" size={24} color="green" /> */}
         <Text variant="bodyLarge">Visão Geral</Text>
-        {/* <FontAwesome5 name="leaf" size={24} color="green" /> */}
       </View>
-      <Divider/>
+      <Divider />
       <List.Item
         title="Umidade do Solo"
         style={{

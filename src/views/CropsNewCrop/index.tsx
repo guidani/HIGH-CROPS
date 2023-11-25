@@ -67,8 +67,8 @@ export default function CropsNewCrop({ navigation }: Props) {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        alignItems: "start",
-        justifyContent: "start",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
         gap: 4,
       }}
     >
@@ -91,24 +91,25 @@ export default function CropsNewCrop({ navigation }: Props) {
           style={{ marginBottom: 4 }}
         />
         <TextInput
-          label={"Umidade do solo máxima"}
-          value={umidadeMax}
-          keyboardType="numeric"
-          onChangeText={(umidadeMax) => setUmidadeMax(umidadeMax)}
-          mode="outlined"
-          style={{ marginBottom: 4 }}
-        />
-        <TextInput
           label={"Umidade do solo mínima"}
-          value={umidadeMin}
+          value={umidadeMin?.toString()}
           keyboardType="numeric"
           onChangeText={(umidadeMin) => setUmidadeMin(umidadeMin)}
           mode="outlined"
           style={{ marginBottom: 4 }}
         />
         <TextInput
+          label={"Umidade do solo máxima"}
+          value={umidadeMax?.toString()}
+          keyboardType="numeric"
+          onChangeText={(umidadeMax) => setUmidadeMax(umidadeMax)}
+          mode="outlined"
+          style={{ marginBottom: 4 }}
+        />
+        
+        <TextInput
           label={"Temperatura Máxima"}
-          value={temperaturaMax}
+          value={temperaturaMax?.toString()}
           keyboardType="numeric"
           onChangeText={(temperaturaMax) => setTemperaturaMax(temperaturaMax)}
           mode="outlined"
@@ -116,7 +117,7 @@ export default function CropsNewCrop({ navigation }: Props) {
         />
         <TextInput
           label={"Temperatura Mínima"}
-          value={temperaturaMin}
+          value={temperaturaMin?.toString()}
           keyboardType="numeric"
           onChangeText={(temperaturaMin) => setTemperaturaMin(temperaturaMin)}
           mode="outlined"

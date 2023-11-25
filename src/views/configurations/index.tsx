@@ -117,8 +117,8 @@ export default function Configurations() {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        alignItems: "start",
-        justifyContent: "start",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
         gap: 4,
       }}
     >

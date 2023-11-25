@@ -1,8 +1,8 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Text, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import { View } from "react-native";
+import { Divider, Text, useTheme } from "react-native-paper";
 export default function History() {
   const theme = useTheme;
   const navigation = useNavigation;
@@ -11,8 +11,8 @@ export default function History() {
       style={{
         flex: 1,
         backgroundColor: "#FFFFFF",
-        alignItems: "start",
-        justifyContent: "start",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
       }}
     >
       <View
@@ -27,7 +27,7 @@ export default function History() {
         <FontAwesome name="list" size={24} color="black" />
         <Text variant="bodyLarge">Visão Geral</Text>
       </View>
-      <Divider/>
+      <Divider />
       <Text>History</Text>
     </View>
   );
