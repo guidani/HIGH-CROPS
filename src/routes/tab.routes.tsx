@@ -5,6 +5,7 @@ import { useTheme } from "react-native-paper";
 import Configurations from "../views/Configurations";
 import CropsStackRoutes from "./cropStack.routes";
 import HomeStackRoutes from "./homeStack.routes";
+import History from "../views/History";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,12 +44,19 @@ export default function TabRoutes() {
         }}
       />
       <Tab.Screen
+      name="History"
+      component={History}
+      options={{
+        tabBarIcon: () => <FontAwesome name=""/>
+      }}
+      />
+      <Tab.Screen
         name="Configs"
         component={Configurations}
         options={{
-          tabBarIcon: () => <FontAwesome name="gear" size={24} color="black" />,
-          tabBarLabel: "Configurações",
-          headerTitle: "Configurações",
+          tabBarIcon: () => <FontAwesome name="list" size={24} color="black" />,
+          tabBarLabel: "Histórico",
+          headerTitle: "Histórico",
         }}
       />
     </Tab.Navigator>
