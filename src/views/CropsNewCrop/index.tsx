@@ -67,8 +67,6 @@ export default function CropsNewCrop({ navigation }: Props) {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
         gap: 4,
       }}
     >
@@ -79,7 +77,15 @@ export default function CropsNewCrop({ navigation }: Props) {
           padding: 12,
         }}
       >
-        <View style={{ flexDirection: "row", gap: 4, padding: 12 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 4,
+            padding: 12,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <FontAwesome5 name="leaf" size={24} color="green" />
           <Text variant="bodyLarge">Adicione uma nova horta.</Text>
         </View>
@@ -106,7 +112,7 @@ export default function CropsNewCrop({ navigation }: Props) {
           mode="outlined"
           style={{ marginBottom: 4 }}
         />
-        
+
         <TextInput
           label={"Temperatura Máxima"}
           value={temperaturaMax?.toString()}

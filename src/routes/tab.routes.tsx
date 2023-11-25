@@ -46,6 +46,8 @@ export default function TabRoutes() {
         name="History"
         component={History}
         options={{
+          headerTitle: "Histórico",
+          tabBarLabel: "Histórico",
           tabBarIcon: () => (
             <FontAwesome name="history" size={24} color="black" />
           ),
@@ -55,7 +57,7 @@ export default function TabRoutes() {
         name="Configs"
         component={Configurations}
         options={{
-          tabBarIcon: () => <FontAwesome name="list" size={24} color="black" />,
+          tabBarIcon: () => <FontAwesome name="gear" size={24} color="black" />,
           tabBarLabel: "Histórico",
           headerTitle: "Histórico",
         }}

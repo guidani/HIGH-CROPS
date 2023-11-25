@@ -1,9 +1,7 @@
 import { collection, onSnapshot, query } from "firebase/firestore";
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../services/firebaseConfig";
 import { IHistory } from "../types/IHistory";
-
-
 
 export default function useGetHistory() {
   const [history, setHistory] = useState<IHistory[] | null>(null);
@@ -17,10 +15,10 @@ export default function useGetHistory() {
       const items: IHistory[] = [];
       querySnapshot.forEach((doc) => {
         items.push({
-          id: doc.id, 
+          id: doc.id,
           cropName: doc.data().CropName,
-          dataIrrigacao: doc.data().DataIrrigacao,
-          umidadeSolo: doc.data().UmidadeSolo
+          DateTime: doc.data()?.DateTime,
+          umidadeSolo: doc.data().UmidadeSolo,
         });
         setHistory(items);
       });
@@ -31,8 +29,7 @@ export default function useGetHistory() {
   useEffect(() => {
     const unsubscribeHistory = getHistory();
     return () => unsubscribeHistory();
-  }, [])
-  
+  }, []);
 
-  return {history, loading};
+  return { history, loading };
 }

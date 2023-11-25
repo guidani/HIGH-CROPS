@@ -158,8 +158,7 @@ export default function CropsDetails({ route, navigation }: Props) {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
+
         gap: 4,
       }}
     >
@@ -170,7 +169,15 @@ export default function CropsDetails({ route, navigation }: Props) {
           padding: 12,
         }}
       >
-        <View style={{ flexDirection: "row", gap: 4, padding: 12 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 4,
+            padding: 12,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <FontAwesome5 name="eye" size={24} color="black" />
           <Text variant="bodyLarge">
             Veja e configure os parâmetros da hortaliça.

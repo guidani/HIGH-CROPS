@@ -3,13 +3,13 @@ import Slider from "@react-native-community/slider";
 import React, { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
-  Text,
   ActivityIndicator,
   Chip,
   Divider,
   FAB,
   Portal,
   Snackbar,
+  Text,
   useTheme,
 } from "react-native-paper";
 import GetInitialHortaConfig from "../../services/getInitialHortaConfig";
@@ -117,8 +117,7 @@ export default function Configurations() {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
+
         gap: 4,
       }}
     >
@@ -129,7 +128,15 @@ export default function Configurations() {
           padding: 4,
         }}
       >
-        <View style={{ flexDirection: "row", gap: 4, padding: 12 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 4,
+            padding: 12,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <FontAwesome name="gear" size={24} color="black" />
           <Text variant="bodyLarge">Configure os parâmetros da sua horta.</Text>
         </View>

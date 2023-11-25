@@ -41,8 +41,7 @@ export default function CropStartPage({ navigation }: Props) {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
+       
       }}
     >
       <View
