@@ -50,7 +50,7 @@ export default function TabRoutes() {
         options={{
           headerTitle: "Histórico",
           tabBarLabel: "Histórico",
-          headerRight: () => <SignOutButton />,
+
           tabBarIcon: () => (
             <FontAwesome name="history" size={24} color="black" />
           ),
