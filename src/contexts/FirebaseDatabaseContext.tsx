@@ -25,10 +25,7 @@ export default function FirebaseDatabaseContextProvider({
   const [umidade, setUmidade] = useState<number | null>(null);
   const [umidadeAr, setUmidadeAr] = useState<number | null>(null);
   const [temperatura, setTemperatura] = useState<number | null>(null);
-  // const { user } = useUser();
   const { userId } = useAuth();
-  // console.log("🚀 ~ file: FirebaseDatabaseContext.tsx:29 ~ user:", user?.id);
-  console.log("🚀 ~ file: FirebaseDatabaseContext.tsx:30 ~ userId:", userId);
 
   if (userId) {
     set(ref(rtdb, "users/" + userId + "/sensores"), {
@@ -42,23 +39,6 @@ export default function FirebaseDatabaseContextProvider({
   }
 
   useEffect(() => {
-    // const unsubscribeUserRTDB = () => {
-    //   if (user?.id) {
-    //     // console.log(
-    //     //   "🚀 ~ file: FirebaseDatabaseContext.tsx:33 ~ unsubscribeUserRTDB ~ user?.id:",
-    //     //   user?.id
-    //     // );
-    //     set(ref(rtdb, "users/" + user.id + "/sensores"), {
-    //       sensorA: {
-    //         umidadeSolo: 0,
-    //       },
-    //       sensorB: {
-    //         umidadeSolo: 0,
-    //       },
-    //     });
-    //   }
-    // };
-
     const unsubscribeUmidade = onValue(ref(rtdb, "umidade"), (snapshot) => {
       const val = snapshot.val();
       setUmidade(val);
@@ -78,7 +58,6 @@ export default function FirebaseDatabaseContextProvider({
     );
 
     return () => {
-      // unsubscribeUserRTDB();
       unsubscribeUmidade();
       unsubscribeUmidadeAr();
       unsubscribeTemperatura();
