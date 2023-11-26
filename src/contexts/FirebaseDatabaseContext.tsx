@@ -1,4 +1,5 @@
-import { onValue, ref } from "firebase/database";
+import { useUser } from "@clerk/clerk-expo";
+import { onValue, ref, set } from "firebase/database";
 import { createContext, useEffect, useState } from "react";
 import { rtdb } from "../services/firebaseConfig";
 
@@ -24,8 +25,26 @@ export default function FirebaseDatabaseContextProvider({
   const [umidade, setUmidade] = useState<number | null>(null);
   const [umidadeAr, setUmidadeAr] = useState<number | null>(null);
   const [temperatura, setTemperatura] = useState<number | null>(null);
+  const { user } = useUser();
 
   useEffect(() => {
+    const unsubscribeUserRTDB = () => {
+      if (user?.id) {
+        console.log(
+          "🚀 ~ file: FirebaseDatabaseContext.tsx:33 ~ unsubscribeUserRTDB ~ user?.id:",
+          user?.id
+        );
+        set(ref(rtdb, "users/" + user.id + "/sensores"), {
+          sensorA: {
+            umidadeSolo: 0,
+          },
+          sensorB: {
+            umidadeSolo: 0,
+          },
+        });
+      }
+    };
+
     const unsubscribeUmidade = onValue(ref(rtdb, "umidade"), (snapshot) => {
       const val = snapshot.val();
       setUmidade(val);
@@ -36,20 +55,26 @@ export default function FirebaseDatabaseContextProvider({
       setUmidadeAr(val);
     });
 
-    const unsubscribeTemperatura = onValue(ref(rtdb, "temperatura"), (snapshot) => {
-      const val = snapshot.val();
-      setTemperatura(val);
-    });
+    const unsubscribeTemperatura = onValue(
+      ref(rtdb, "temperatura"),
+      (snapshot) => {
+        const val = snapshot.val();
+        setTemperatura(val);
+      }
+    );
 
     return () => {
+      unsubscribeUserRTDB();
       unsubscribeUmidade();
       unsubscribeUmidadeAr();
       unsubscribeTemperatura();
     };
-  }, []);
+  }, [user]);
 
   return (
-    <FirebaseDatabaseContext.Provider value={{ umidade, umidadeAr, temperatura }}>
+    <FirebaseDatabaseContext.Provider
+      value={{ umidade, umidadeAr, temperatura }}
+    >
       {children}
     </FirebaseDatabaseContext.Provider>
   );
