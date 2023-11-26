@@ -9,7 +9,6 @@ interface Props {
 }
 
 export default function StartPage({ navigation }: Props) {
-  // const { temperatura } = useGetTemperatura();
   const { umidade, umidadeAr, temperatura } = UseFirebaseDatabase();
   const theme = useTheme();
 

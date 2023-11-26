@@ -116,7 +116,6 @@ export default function Configurations() {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-
         gap: 4,
       }}
     >

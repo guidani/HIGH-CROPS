@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import SignOutButton from "../components/SignOutButton";
-import Configurations from "../views/Configurations";
 import History from "../views/History";
 
+import UserStartPage from "../views/UserStartPage";
 import CropsStackRoutes from "./cropstack.routes";
 import HomeStackRoutes from "./homeStack.routes";
 
@@ -57,13 +57,13 @@ export default function TabRoutes() {
         }}
       />
       <Tab.Screen
-        name="Configs"
-        component={Configurations}
+        name="User"
+        component={UserStartPage}
         options={{
           headerRight: () => <SignOutButton />,
-          tabBarIcon: () => <FontAwesome name="gear" size={24} color="black" />,
-          tabBarLabel: "Histórico",
-          headerTitle: "Histórico",
+          tabBarIcon: () => <FontAwesome name="user" size={24} color="black" />,
+          tabBarLabel: "Usuário",
+          headerTitle: "Usuário",
         }}
       />
     </Tab.Navigator>

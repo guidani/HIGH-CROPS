@@ -1,8 +1,9 @@
 import { useOAuth } from "@clerk/clerk-expo";
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
-import { Button, View } from "react-native";
+import { Button } from "react-native";
 import { Text } from "react-native-paper";
+import ViewCenter from "../../components/ViewCenter";
 import { useWarmUpBrowser } from "../../hooks/warmUpBrowser";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -30,11 +31,11 @@ const SignInWithOAuth = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <ViewCenter>
       <Text variant="headlineLarge">HIGH CROPS</Text>
       <Text variant="bodyMedium">Entre para continuar</Text>
-      <Button title="Sign in with Google" onPress={onPress} />
-    </View>
+      <Button title="Entrar com o Google" onPress={onPress} />
+    </ViewCenter>
   );
 };
 export default SignInWithOAuth;
