@@ -2,6 +2,7 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { useTheme } from "react-native-paper";
+import SignOutButton from "../components/SignOutButton";
 import Configurations from "../views/Configurations";
 import History from "../views/History";
 import CropsStackRoutes from "./cropStack.routes";
@@ -48,6 +49,7 @@ export default function TabRoutes() {
         options={{
           headerTitle: "Histórico",
           tabBarLabel: "Histórico",
+          headerRight: () => <SignOutButton />,
           tabBarIcon: () => (
             <FontAwesome name="history" size={24} color="black" />
           ),
@@ -57,6 +59,7 @@ export default function TabRoutes() {
         name="Configs"
         component={Configurations}
         options={{
+          headerRight: () => <SignOutButton />,
           tabBarIcon: () => <FontAwesome name="gear" size={24} color="black" />,
           tabBarLabel: "Histórico",
           headerTitle: "Histórico",
