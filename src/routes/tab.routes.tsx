@@ -5,7 +5,8 @@ import { useTheme } from "react-native-paper";
 import SignOutButton from "../components/SignOutButton";
 import Configurations from "../views/Configurations";
 import History from "../views/History";
-import CropsStackRoutes from "./cropStack.routes";
+
+import CropsStackRoutes from "./cropstack.routes";
 import HomeStackRoutes from "./homeStack.routes";
 
 const Tab = createBottomTabNavigator();
