@@ -1,4 +1,4 @@
-import { useOAuth } from "@clerk/clerk-expo";
+import { useAuth, useOAuth } from "@clerk/clerk-expo";
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import { Button } from "react-native";
@@ -9,6 +9,7 @@ import { useWarmUpBrowser } from "../../hooks/warmUpBrowser";
 WebBrowser.maybeCompleteAuthSession();
 
 const SignInWithOAuth = () => {
+  const { userId } = useAuth();
   // Warm up the android browser to improve UX
   // https://docs.expo.dev/guides/authentication/#improving-user-experience
   useWarmUpBrowser();
