@@ -1,7 +1,8 @@
 import { useAuth } from "@clerk/clerk-expo";
 import { onValue, ref, set } from "firebase/database";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useEffect, useState } from "react";
-import { rtdb } from "../services/firebaseConfig";
+import { db, rtdb } from "../services/firebaseConfig";
 
 interface IFirebaseDatabaseContextProvider {
   children: React.ReactNode;
@@ -27,8 +28,8 @@ export default function FirebaseDatabaseContextProvider({
   const [temperatura, setTemperatura] = useState<number | null>(null);
   const { userId } = useAuth();
 
-  if (userId) {
-    set(ref(rtdb, "users/" + userId + "/sensores"), {
+  async function setRealTimeDatabase() {
+    await set(ref(rtdb, "users/" + userId + "/sensores"), {
       sensorA: {
         umidadeSolo: 0,
       },
@@ -36,6 +37,28 @@ export default function FirebaseDatabaseContextProvider({
         umidadeSolo: 0,
       },
     });
+  }
+
+  async function setFiresotreInitalData() {
+    const docRef = doc(db, "Crops", `${userId}`);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      await setDoc(doc(db, "Crops", `${userId}`), {
+        sensorA: {
+          nome: "",
+          umidade: 0,
+        },
+        sensorB: {
+          nome: "",
+          umidade: 0,
+        },
+      });
+    }
+  }
+
+  if (userId) {
+    setRealTimeDatabase();
+    setFiresotreInitalData();
   }
 
   useEffect(() => {
