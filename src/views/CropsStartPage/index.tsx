@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import useGetCrops from "../../hooks/useGetCrops";
+import useGetSensores from "../../hooks/useGetSensores";
 
 interface Props {
   navigation: any;
@@ -20,6 +21,7 @@ interface Props {
 export default function CropStartPage({ navigation }: Props) {
   const theme = useTheme();
   const { crops, loading } = useGetCrops();
+  useGetSensores();
 
   if (loading) {
     return (
@@ -41,7 +43,6 @@ export default function CropStartPage({ navigation }: Props) {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-       
       }}
     >
       <View
