@@ -1,6 +1,6 @@
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
   ActivityIndicator,
@@ -11,9 +11,7 @@ import {
   TextInput,
   useTheme,
 } from "react-native-paper";
-import DeleteCropFromDatabase from "../../services/deleteCrop";
-import GetSingleCrop from "../../services/getSingleCrop";
-import UpdateCrop from "../../services/updateCrop";
+import ViewCenter from "../../components/ViewCenter";
 import { IconProps } from "../../types/IconProps";
 
 interface Props {
@@ -21,18 +19,15 @@ interface Props {
   route: any;
 }
 // TODO - finalizar a página
-export default function CropsDetails({ route, navigation }: Props) {
+export default function CropsDetails({ route }: Props) {
   const navigat = useNavigation();
-  const { itemId } = route.params;
+  const { itemId, sensores } = route.params;
+  console.log("🚀 ~ file: index.tsx:25 ~ CropsDetails ~ sensores:", sensores);
+  console.log("🚀 ~ file: index.tsx:26 ~ CropsDetails ~ itemId:", itemId);
+  // const { loading, sensores } = useGetSensores();
+
   const theme = useTheme();
   const [name, setName] = useState<string | undefined>("");
-  const [temperaturaMax, setTemperaturaMax] = useState<
-    number | string | undefined
-  >(0);
-  const [temperaturaMin, setTemperaturaMin] = useState<
-    number | string | undefined
-  >(0);
-  const [umidadeMax, setUmidadeMax] = useState<number | string | undefined>(0);
   const [umidadeMin, setUmidadeMin] = useState<number | string | undefined>(0);
 
   const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
@@ -41,7 +36,6 @@ export default function CropsDetails({ route, navigation }: Props) {
   const [successOnSave, setSuccessOnSave] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorOnLoad, setErrorOnLoad] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
 
   async function updateCropToDataBase() {
     if (!name) {
@@ -50,16 +44,8 @@ export default function CropsDetails({ route, navigation }: Props) {
       return;
     }
     setIsLoading(true);
-    const resp = await UpdateCrop(
-      {
-        name: name,
-        temperaturaMax: temperaturaMax,
-        temperaturaMin: temperaturaMin,
-        umidadeMax: umidadeMax,
-        umidadeMin: umidadeMin,
-      },
-      itemId
-    );
+    // TODO - fazer atualização aqui;
+    const resp = "";
     setIsLoading(false);
     if (resp) {
       setSuccessOnSave(true);
@@ -70,58 +56,34 @@ export default function CropsDetails({ route, navigation }: Props) {
     }
   }
 
-  async function getData() {
-    try {
-      setIsLoading(true);
-      const resp = await GetSingleCrop(itemId);
-      if (!resp) {
-        setErrorOnLoad(true);
-      }
-
-      setName(resp?.name || "");
-      setUmidadeMax(resp?.umidadeMax || 0);
-      setUmidadeMin(resp?.umidadeMin || 0);
-      setTemperaturaMax(resp?.temperaturaMax || 0);
-      setTemperaturaMin(resp?.temperaturaMin || 0);
-    } catch (error) {
-      setIsLoading(false);
-      setErrorOnLoad(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  const handleExlcuirCrop = useCallback(async () => {
-    setIsLoading(true);
-    const resp = await DeleteCropFromDatabase(itemId);
-    setIsLoading(false);
-    if (resp) {
-      setIsDeleted(true);
-      setPortalSnackbarVisible(true);
-      navigat.goBack();
-    } else {
-      setIsDeleted(false);
-      setPortalSnackbarVisible(true);
-    }
-  }, [navigat]);
-
-  async function deleteCropFromDatabase() {
-    setIsLoading(true);
-    const resp = await DeleteCropFromDatabase(itemId);
-    setIsLoading(false);
-    if (resp) {
-      setIsDeleted(true);
-      setPortalSnackbarVisible(true);
-      return () => navigation.goBack();
-    } else {
-      setIsDeleted(false);
-      setPortalSnackbarVisible(true);
-    }
+  function loadInitialData() {
+    const nome =
+      sensores[`${itemId}`]["nome"]! === ""
+        ? `${itemId}`
+        : sensores[`${itemId}`]["nome"]!;
+    const umidade =
+      sensores[`${itemId}`]["umidade"]! === ""
+        ? `${itemId}`
+        : sensores[`${itemId}`]["umidade"]!;
+    setName(nome);
+    setUmidadeMin(umidade);
   }
 
   useEffect(() => {
-    getData();
+    loadInitialData();
   }, []);
+
+  if (
+    Object.keys(sensores).length === 0 ||
+    Object.keys(sensores).length === undefined
+  ) {
+    setErrorOnLoad(true);
+    return (
+      <ViewCenter>
+        <Text>Nada encontrado!</Text>
+      </ViewCenter>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -198,36 +160,13 @@ export default function CropsDetails({ route, navigation }: Props) {
           mode="outlined"
           style={{ marginBottom: 4 }}
         />
-        <TextInput
-          label={"Umidade do solo máxima"}
-          value={umidadeMax?.toString()}
-          keyboardType="numeric"
-          onChangeText={(umidadeMax) => setUmidadeMax(umidadeMax)}
-          mode="outlined"
-          style={{ marginBottom: 4 }}
-        />
-        <TextInput
-          label={"Temperatura Máxima"}
-          value={temperaturaMax?.toString()}
-          keyboardType="numeric"
-          onChangeText={(temperaturaMax) => setTemperaturaMax(temperaturaMax)}
-          mode="outlined"
-          style={{ marginBottom: 4 }}
-        />
-        <TextInput
-          label={"Temperatura Mínima"}
-          value={temperaturaMin?.toString()}
-          keyboardType="numeric"
-          onChangeText={(temperaturaMin) => setTemperaturaMin(temperaturaMin)}
-          mode="outlined"
-          style={{ marginBottom: 4 }}
-        />
       </ScrollView>
       <FAB
+        animated={false}
         icon={(props: IconProps & { color: string }) => (
           <FontAwesome name="trash" size={24} color="white" />
         )}
-        onPress={() => handleExlcuirCrop()}
+        onPress={() => {}}
         loading={isLoading ? true : false}
         style={{
           position: "absolute",
@@ -238,6 +177,7 @@ export default function CropsDetails({ route, navigation }: Props) {
         }}
       />
       <FAB
+        animated={false}
         icon={(props: IconProps & { color: string }) => (
           <FontAwesome name="save" size={24} color="black" />
         )}
@@ -276,9 +216,6 @@ export default function CropsDetails({ route, navigation }: Props) {
           </Text>
           <Text variant="bodyMedium" style={{ color: "#FFFFFF" }}>
             {successOnSave ? "Salvo com sucesso." : ""}
-          </Text>
-          <Text variant="bodyMedium" style={{ color: "#FFFFFF" }}>
-            {isDeleted ? "Deletado com sucesso." : ""}
           </Text>
         </Snackbar>
       </Portal>

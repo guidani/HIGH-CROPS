@@ -19,7 +19,6 @@ interface Props {
 
 export default function CropStartPage({ navigation }: Props) {
   const theme = useTheme();
-  //const { crops, loading } = useGetCrops();
   const { loading, sensores } = useGetSensores();
 
   if (loading) {
@@ -81,7 +80,12 @@ export default function CropStartPage({ navigation }: Props) {
               <FontAwesome {...props} name="gear" size={24} color="black" />
             )}
             size={20}
-            onPress={() => navigation.navigate("CropsDetails", {})}
+            onPress={() =>
+              navigation.navigate("CropsDetails", {
+                itemId: "sensorA",
+                sensores,
+              })
+            }
           />
         )}
       />
@@ -98,7 +102,12 @@ export default function CropStartPage({ navigation }: Props) {
               <FontAwesome {...props} name="gear" size={24} color="black" />
             )}
             size={20}
-            onPress={() => navigation.navigate("CropsDetails", {})}
+            onPress={() =>
+              navigation.navigate("CropsDetails", {
+                itemId: "sensorB",
+                sensores,
+              })
+            }
           />
         )}
       />
