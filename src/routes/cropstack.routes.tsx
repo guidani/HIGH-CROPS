@@ -2,7 +2,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import CropsDetails from "../views/CropsDetails";
-import CropsNewCrop from "../views/CropsNewCrop";
 import CropStartPage from "../views/CropsStartPage";
 const Stack = createStackNavigator();
 export default function CropsStackRoutes() {
@@ -21,14 +20,6 @@ export default function CropsStackRoutes() {
         options={{
           title: "Crops",
           headerTitle: "Hortaliças",
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="CropsNewCrop"
-        component={CropsNewCrop}
-        options={{
-          title: "Nova hortaliça",
           headerTitleAlign: "center",
         }}
       />
