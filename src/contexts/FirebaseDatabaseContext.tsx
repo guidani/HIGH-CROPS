@@ -43,16 +43,28 @@ export default function FirebaseDatabaseContextProvider({
     const docRef = doc(db, "Crops", `${userId}`);
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
+      //const testCollection = collection(db, "Crops", `${userId}`, "sensores");
       await setDoc(doc(db, "Crops", `${userId}`), {
-        sensorA: {
-          nome: "",
-          umidade: 0,
-        },
-        sensorB: {
-          nome: "",
-          umidade: 0,
-        },
+        userId: userId,
       });
+      await setDoc(doc(db, "Crops", `${userId}`, "sensores", "sensorA"), {
+        nome: "",
+        umidade: 0,
+      });
+      await setDoc(doc(db, "Crops", `${userId}`, "sensores", "sensorB"), {
+        nome: "",
+        umidade: 0,
+      });
+      // await setDoc(doc(db, "Crops", `${userId}`, "sensores"), {
+      //   sensorA: {
+      //     nome: "",
+      //     umidade: 0,
+      //   },
+      //   sensorB: {
+      //     nome: "",
+      //     umidade: 0,
+      //   },
+      // });
     }
   }
 
