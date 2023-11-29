@@ -1,6 +1,8 @@
+import { useAuth } from "@clerk/clerk-expo";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-import React from "react";
-import { View } from "react-native";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { FlatList, View } from "react-native";
 import {
   ActivityIndicator,
   Divider,
@@ -10,18 +12,48 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
-import ViewCenter from "../../components/ViewCenter";
-import useGetSensores from "../../hooks/useGetSensores";
+import { db } from "../../services/firebaseConfig";
 
 interface Props {
   navigation: any;
 }
 
+interface ISensors {
+  sensorId?: string;
+  nome?: string;
+  umidadeMin?: number;
+}
+
 export default function CropStartPage({ navigation }: Props) {
   const theme = useTheme();
-  const { loading, sensores } = useGetSensores();
+  // const { loading, sensores } = useGetSensores();
+  const { userId } = useAuth();
+  const [sensors, setSensors] = useState<ISensors[] | null>(null);
 
-  if (loading) {
+  function getListOfSensors() {
+    const collRef = collection(db, "Crops", `${userId}`, "sensores");
+    const q = query(collRef);
+    return onSnapshot(q, (querySnapshot) => {
+      const items: ISensors[] = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        items?.push({
+          sensorId: doc.id,
+          nome: doc.data()?.nome,
+          umidadeMin: doc.data()?.umidadeMin,
+        });
+        setSensors(items);
+      });
+      console.log(items);
+    });
+  }
+
+  useEffect(() => {
+    const unsub = getListOfSensors();
+    return () => unsub();
+  }, []);
+
+  if (sensors?.length === 0) {
     return (
       <View
         style={{
@@ -33,17 +65,6 @@ export default function CropStartPage({ navigation }: Props) {
       >
         <ActivityIndicator animating={true} color={MD2Colors.green400} />
       </View>
-    );
-  }
-
-  if (
-    Object.keys(sensores).length === 0 ||
-    Object.keys(sensores).length === undefined
-  ) {
-    return (
-      <ViewCenter>
-        <Text>Nada encontrado!</Text>
-      </ViewCenter>
     );
   }
 
@@ -68,61 +89,27 @@ export default function CropStartPage({ navigation }: Props) {
         <FontAwesome5 name="leaf" size={24} color="green" />
       </View>
       <Divider />
-      <List.Item
-        title={
-          sensores["sensorA"]["nome"]! === ""
-            ? "sensorA"
-            : sensores["sensorA"]["nome"]!
-        }
-        right={() => (
-          <IconButton
-            icon={(props) => (
-              <FontAwesome {...props} name="gear" size={24} color="black" />
+      {/*  */}
+      <FlatList
+        data={sensors}
+        renderItem={({ item, index }) => (
+          <List.Item
+            key={item?.sensorId || index}
+            title={item?.nome || ""}
+            description={item.umidadeMin?.toString()}
+            right={() => (
+              <IconButton
+                icon={(props) => (
+                  <FontAwesome {...props} name="gear" size={24} color="black" />
+                )}
+                size={20}
+                onPress={() => navigation.navigate("CropsDetails", {})}
+              />
             )}
-            size={20}
-            onPress={() =>
-              navigation.navigate("CropsDetails", {
-                itemId: "sensorA",
-                sensores,
-              })
-            }
           />
         )}
       />
-      <Divider />
-      <List.Item
-        title={
-          sensores["sensorB"]["nome"]! === ""
-            ? "sensorB"
-            : sensores["sensorB"]["nome"]!
-        }
-        right={() => (
-          <IconButton
-            icon={(props) => (
-              <FontAwesome {...props} name="gear" size={24} color="black" />
-            )}
-            size={20}
-            onPress={() =>
-              navigation.navigate("CropsDetails", {
-                itemId: "sensorB",
-                sensores,
-              })
-            }
-          />
-        )}
-      />
-
-      {/* <FAB
-        icon={"plus"}
-        onPress={() => navigation.navigate("CropsNewCrop")}
-        style={{
-          position: "absolute",
-          margin: 16,
-          right: 0,
-          bottom: 0,
-          backgroundColor: theme.colors.primary,
-        }}
-      /> */}
+      {/*  */}
     </View>
   );
 }
