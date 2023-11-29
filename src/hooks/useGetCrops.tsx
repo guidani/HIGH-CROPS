@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { CropType } from '../types/CropType';
-import { collection, onSnapshot, query } from 'firebase/firestore';
-import { db } from '../services/firebaseConfig';
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { db } from "../services/firebaseConfig";
+import { CropType } from "../types/CropType";
 
 export default function useGetCrops() {
   const [crops, setCrops] = useState<CropType[] | null>(null);
@@ -16,11 +16,7 @@ export default function useGetCrops() {
       querySnapshot.forEach((doc) => {
         items?.push({
           id: doc.id,
-          name: doc.data()?.name,
-          ownerId: doc.data()?.ownerId,
-          temperaturaMax: doc.data()?.temperaturaMax,
-          temperaturaMin: doc.data()?.temperaturaMin,
-          umidadeMax: doc.data()?.umidadeMax,
+          nome: doc.data()?.nome,
           umidadeMin: doc.data()?.umidadeMin,
         });
         setCrops(items);
@@ -34,5 +30,5 @@ export default function useGetCrops() {
     const unsub = getCropsRealTime();
     return () => unsub();
   }, []);
-  return {crops, loading}
+  return { crops, loading };
 }

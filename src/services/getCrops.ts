@@ -17,15 +17,10 @@ export default async function getCrops(): Promise<CropType[]> {
     (doc: QueryDocumentSnapshot<CropType | DocumentData>) => {
       const item: CropType = {
         id: doc.id,
-        name: doc.data().name,
-        ownerId: doc.data().ownerId,
-        temperaturaMax: doc.data().temperaturaMax,
-        temperaturaMin: doc.data().temperaturaMin,
-        umidadeMax: doc.data().umidadeMax,
+        nome: doc.data().nome,
         umidadeMin: doc.data().umidadeMin,
       };
       crops.push(item);
-      
     }
   );
   return crops;
