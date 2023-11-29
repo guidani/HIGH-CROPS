@@ -47,14 +47,13 @@ export default function FirebaseDatabaseContextProvider({
         userId: userId,
       });
       await setDoc(doc(db, "Crops", `${userId}`, "sensores", "sensorA"), {
-        nome: "",
+        nome: "sensorA",
         umidade: 0,
       });
       await setDoc(doc(db, "Crops", `${userId}`, "sensores", "sensorB"), {
-        nome: "",
+        nome: "sensorB",
         umidade: 0,
       });
-      
     }
   }
 

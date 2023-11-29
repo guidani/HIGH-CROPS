@@ -16,9 +16,9 @@ import {
   useTheme,
 } from "react-native-paper";
 import GetSingleCrop from "../../services/getSingleCrop";
-import { IconProps } from "../../types/IconProps";
 import UpdateCrop from "../../services/updateCrop";
 import { CropType } from "../../types/CropType";
+import { IconProps } from "../../types/IconProps";
 
 interface Props {
   navigation: any;
@@ -42,22 +42,37 @@ export default function CropsDetails({ route }: Props) {
   const [errorOnLoad, setErrorOnLoad] = useState(false);
 
   async function updateCropToDataBase() {
-    const crop: CropType = {
-      nome: name,
-      umidadeMin: umidadeMin
-    }
-    const resp = await UpdateCrop(crop, itemId, userId!);
-    if (resp){
-      console.log("Atualizado!");
+    try {
+      setIsLoading(true);
+      const crop: CropType = {
+        nome: name,
+        umidadeMin: umidadeMin,
+      };
+      const resp = await UpdateCrop(crop, itemId, userId!);
+      if (resp) {
+        setSuccessOnSave(true);
+      }
+    } catch (error) {
+      setErrorOnSave(true);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   async function loadInitialData() {
-    const resp = await GetSingleCrop(userId!, itemId);
-    //@ts-ignore
-    setName(resp["nome"]);
-    //@ts-ignore
-    setUmidadeMin(resp["umidade"]);
+    try {
+      setIsLoading(true);
+      const resp = await GetSingleCrop(userId!, itemId);
+      //@ts-ignore
+      setName(resp["nome"]);
+      //@ts-ignore
+      setUmidadeMin(resp["umidadeMin"]);
+    } catch (error) {
+      setIsLoading(false);
+      setErrorOnLoad(true);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -180,13 +195,13 @@ export default function CropsDetails({ route }: Props) {
           }}
         >
           <Text variant="bodyMedium" style={{ color: "#FFFFFF" }}>
-            {noNameError ? "Pelo menos uma nome deve ser fornecido!" : ""}
+            {noNameError && "Pelo menos uma nome deve ser fornecido!"}
           </Text>
           <Text variant="bodyMedium" style={{ color: "#FFFFFF" }}>
-            {errorOnSave ? "Houve um problema ao salvar, tente novamente." : ""}
+            {errorOnSave && "Houve um problema ao salvar, tente novamente."}
           </Text>
           <Text variant="bodyMedium" style={{ color: "#FFFFFF" }}>
-            {successOnSave ? "Salvo com sucesso." : ""}
+            {successOnSave && "Salvo com sucesso."}
           </Text>
         </Snackbar>
       </Portal>

@@ -22,7 +22,8 @@ const SignInWithOAuth = () => {
         await startOAuthFlow();
 
       if (createdSessionId) {
-        //setActive({ session: createdSessionId });
+        //@ts-ignore
+        setActive({ session: createdSessionId });
       } else {
         // Use signIn or signUp for next steps such as MFA
       }
