@@ -94,7 +94,7 @@ export default function CropStartPage({ navigation }: Props) {
           <List.Item
             key={item?.sensorId || index}
             title={item?.nome || ""}
-            description={item.umidadeMin?.toString()}
+            description={"Umidade mínima: " + item.umidadeMin?.toString()}
             right={() => (
               <IconButton
                 icon={(props) => (

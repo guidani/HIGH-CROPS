@@ -17,6 +17,8 @@ import {
 } from "react-native-paper";
 import GetSingleCrop from "../../services/getSingleCrop";
 import { IconProps } from "../../types/IconProps";
+import UpdateCrop from "../../services/updateCrop";
+import { CropType } from "../../types/CropType";
 
 interface Props {
   navigation: any;
@@ -39,7 +41,16 @@ export default function CropsDetails({ route }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorOnLoad, setErrorOnLoad] = useState(false);
 
-  async function updateCropToDataBase() {}
+  async function updateCropToDataBase() {
+    const crop: CropType = {
+      nome: name,
+      umidadeMin: umidadeMin
+    }
+    const resp = await UpdateCrop(crop, itemId, userId!);
+    if (resp){
+      console.log("Atualizado!");
+    }
+  }
 
   async function loadInitialData() {
     const resp = await GetSingleCrop(userId!, itemId);

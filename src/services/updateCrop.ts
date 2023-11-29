@@ -7,18 +7,21 @@ import {
 import { CropType } from "../types/CropType";
 import { db } from "./firebaseConfig";
 
-export default async function UpdateCrop(crop: CropType, id: string) {
+export default async function UpdateCrop(
+  crop: CropType,
+  itemId: string,
+  userId: string
+) {
   try {
     const cropRef: DocumentReference<DocumentData, CropType> = doc(
       db,
       "Crops",
-      id
+      `${userId}`,
+      "sensores",
+      itemId
     );
     await updateDoc(cropRef, {
-      name: crop.name,
-      temperaturaMax: crop.temperaturaMax,
-      temperaturaMin: crop.temperaturaMin,
-      umidadeMax: crop.umidadeMax,
+      nome: crop.nome,
       umidadeMin: crop.umidadeMin,
     });
     return true;
