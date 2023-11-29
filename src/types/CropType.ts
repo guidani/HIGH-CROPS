@@ -1,9 +1,6 @@
 export interface CropType {
   id?: string;
   ownerId?: string;
-  name?: string;
-  umidadeMax?: number | string;
+  nome?: string;
   umidadeMin?: number | string;
-  temperaturaMax?: number | string;
-  temperaturaMin?: number | string;
 }

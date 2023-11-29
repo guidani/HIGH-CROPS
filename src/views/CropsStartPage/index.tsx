@@ -36,7 +36,6 @@ export default function CropStartPage({ navigation }: Props) {
     return onSnapshot(q, (querySnapshot) => {
       const items: ISensors[] = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
         items?.push({
           sensorId: doc.id,
           nome: doc.data()?.nome,
@@ -44,7 +43,6 @@ export default function CropStartPage({ navigation }: Props) {
         });
         setSensors(items);
       });
-      console.log(items);
     });
   }
 
@@ -103,7 +101,11 @@ export default function CropStartPage({ navigation }: Props) {
                   <FontAwesome {...props} name="gear" size={24} color="black" />
                 )}
                 size={20}
-                onPress={() => navigation.navigate("CropsDetails", {})}
+                onPress={() =>
+                  navigation.navigate("CropsDetails", {
+                    itemId: item.sensorId,
+                  })
+                }
               />
             )}
           />

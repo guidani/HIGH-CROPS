@@ -2,7 +2,6 @@ import { useAuth } from "@clerk/clerk-expo";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { useNavigation } from "@react-navigation/native";
-import { doc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
@@ -16,24 +15,23 @@ import {
   TextInput,
   useTheme,
 } from "react-native-paper";
-import ViewCenter from "../../components/ViewCenter";
-import { db } from "../../services/firebaseConfig";
+import GetSingleCrop from "../../services/getSingleCrop";
 import { IconProps } from "../../types/IconProps";
 
 interface Props {
   navigation: any;
   route: any;
 }
-// TODO - finalizar a página
+
 export default function CropsDetails({ route }: Props) {
   const navigat = useNavigation();
-  const { itemId, sensores } = route.params;
+  const { itemId } = route.params;
   const { userId } = useAuth();
 
   const theme = useTheme();
   const [name, setName] = useState<string>("");
-  const [umidadeMin, setUmidadeMin] = useState<number | undefined>(0);
-
+  const [umidadeMin, setUmidadeMin] = useState<number>(0);
+  //
   const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
   const [noNameError, setNoNameError] = useState(false);
   const [errorOnSave, setErrorOnSave] = useState(false);
@@ -41,72 +39,19 @@ export default function CropsDetails({ route }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorOnLoad, setErrorOnLoad] = useState(false);
 
-  async function updateCropToDataBase() {
-    try {
-      if (!name) {
-        setNoNameError(true);
-        setPortalSnackbarVisible(true);
-        return;
-      }
-      setIsLoading(true);
-      if (itemId === "sensorA") {
-        await setDoc(doc(db, "Crops", `${userId}`), {
-          sensorA: {
-            nome: name.toString(),
-            umidade: umidadeMin,
-          },
-          sensorB: {
-            nome: sensores["sensorB"]["nome"]!,
-            umidade: sensores["sensorB"]["umidade"]!,
-          },
-        });
-      } else {
-        await setDoc(doc(db, "Crops", `${userId}`), {
-          sensorA: {
-            nome: sensores["sensorA"]["nome"]!,
-            umidade: sensores["sensorA"]["umidade"]!,
-          },
-          sensorB: {
-            nome: name,
-            umidade: Number(umidadeMin),
-          },
-        });
-      }
-    } catch (error) {
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  async function updateCropToDataBase() {}
 
-  function loadInitialData() {
-    const nome =
-      sensores[`${itemId}`]["nome"]! === ""
-        ? `${itemId}`
-        : sensores[`${itemId}`]["nome"]!;
-    const umidade =
-      sensores[`${itemId}`]["umidade"]! === ""
-        ? `${itemId}`
-        : sensores[`${itemId}`]["umidade"]!;
-    setName(nome);
-    setUmidadeMin(umidade);
+  async function loadInitialData() {
+    const resp = await GetSingleCrop(userId!, itemId);
+    //@ts-ignore
+    setName(resp["nome"]);
+    //@ts-ignore
+    setUmidadeMin(resp["umidade"]);
   }
 
   useEffect(() => {
     loadInitialData();
   }, []);
-
-  if (
-    Object.keys(sensores).length === 0 ||
-    Object.keys(sensores).length === undefined
-  ) {
-    setErrorOnLoad(true);
-    return (
-      <ViewCenter>
-        <Text>Nada encontrado!</Text>
-      </ViewCenter>
-    );
-  }
 
   if (isLoading) {
     return (
@@ -217,9 +162,6 @@ export default function CropsDetails({ route }: Props) {
             setErrorOnSave(false);
             setSuccessOnSave(false);
             setPortalSnackbarVisible(false);
-          }}
-          action={{
-            label: "X",
           }}
           style={{
             flex: 1,
