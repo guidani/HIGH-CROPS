@@ -1,9 +1,14 @@
+import { useAuth } from "@clerk/clerk-expo";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import Slider from "@react-native-community/slider";
 import { useNavigation } from "@react-navigation/native";
+import { doc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
   ActivityIndicator,
+  Chip,
+  Divider,
   FAB,
   Portal,
   Snackbar,
@@ -12,6 +17,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import ViewCenter from "../../components/ViewCenter";
+import { db } from "../../services/firebaseConfig";
 import { IconProps } from "../../types/IconProps";
 
 interface Props {
@@ -22,13 +28,11 @@ interface Props {
 export default function CropsDetails({ route }: Props) {
   const navigat = useNavigation();
   const { itemId, sensores } = route.params;
-  console.log("🚀 ~ file: index.tsx:25 ~ CropsDetails ~ sensores:", sensores);
-  console.log("🚀 ~ file: index.tsx:26 ~ CropsDetails ~ itemId:", itemId);
-  // const { loading, sensores } = useGetSensores();
+  const { userId } = useAuth();
 
   const theme = useTheme();
-  const [name, setName] = useState<string | undefined>("");
-  const [umidadeMin, setUmidadeMin] = useState<number | string | undefined>(0);
+  const [name, setName] = useState<string>("");
+  const [umidadeMin, setUmidadeMin] = useState<number | undefined>(0);
 
   const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
   const [noNameError, setNoNameError] = useState(false);
@@ -38,21 +42,40 @@ export default function CropsDetails({ route }: Props) {
   const [errorOnLoad, setErrorOnLoad] = useState(false);
 
   async function updateCropToDataBase() {
-    if (!name) {
-      setNoNameError(true);
-      setPortalSnackbarVisible(true);
-      return;
-    }
-    setIsLoading(true);
-    // TODO - fazer atualização aqui;
-    const resp = "";
-    setIsLoading(false);
-    if (resp) {
-      setSuccessOnSave(true);
-      setPortalSnackbarVisible(true);
-    } else {
-      setErrorOnSave(true);
-      setPortalSnackbarVisible(true);
+    try {
+      if (!name) {
+        setNoNameError(true);
+        setPortalSnackbarVisible(true);
+        return;
+      }
+      setIsLoading(true);
+      if (itemId === "sensorA") {
+        await setDoc(doc(db, "Crops", `${userId}`), {
+          sensorA: {
+            nome: name.toString(),
+            umidade: umidadeMin,
+          },
+          sensorB: {
+            nome: sensores["sensorB"]["nome"]!,
+            umidade: sensores["sensorB"]["umidade"]!,
+          },
+        });
+      } else {
+        await setDoc(doc(db, "Crops", `${userId}`), {
+          sensorA: {
+            nome: sensores["sensorA"]["nome"]!,
+            umidade: sensores["sensorA"]["umidade"]!,
+          },
+          sensorB: {
+            nome: name,
+            umidade: Number(umidadeMin),
+          },
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -135,7 +158,7 @@ export default function CropsDetails({ route }: Props) {
           style={{
             flexDirection: "row",
             gap: 4,
-            padding: 12,
+            paddingHorizontal: 12,
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -152,30 +175,25 @@ export default function CropsDetails({ route }: Props) {
           mode="outlined"
           style={{ marginBottom: 4 }}
         />
-        <TextInput
-          label={"Umidade do solo mínima"}
-          value={umidadeMin?.toString()}
-          keyboardType="numeric"
-          onChangeText={(umidadeMin) => setUmidadeMin(umidadeMin)}
-          mode="outlined"
-          style={{ marginBottom: 4 }}
-        />
+        <Divider style={{ marginVertical: 4 }} />
+        <Text>Umidade do solo Mínima %</Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Slider
+            style={{ width: "80%" }}
+            step={1}
+            maximumValue={100}
+            minimumValue={0}
+            onValueChange={(v) => setUmidadeMin(v)}
+            value={umidadeMin}
+            thumbTintColor="#000000"
+            minimumTrackTintColor={theme.colors.primary}
+            maximumTrackTintColor="red"
+          />
+          <Chip mode="outlined">
+            <Text>{umidadeMin}</Text>
+          </Chip>
+        </View>
       </ScrollView>
-      <FAB
-        animated={false}
-        icon={(props: IconProps & { color: string }) => (
-          <FontAwesome name="trash" size={24} color="white" />
-        )}
-        onPress={() => {}}
-        loading={isLoading ? true : false}
-        style={{
-          position: "absolute",
-          margin: 16,
-          left: 0,
-          bottom: 0,
-          backgroundColor: theme.colors.error,
-        }}
-      />
       <FAB
         animated={false}
         icon={(props: IconProps & { color: string }) => (
