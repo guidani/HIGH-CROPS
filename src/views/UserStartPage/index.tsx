@@ -6,7 +6,7 @@ import { ActivityIndicator, Avatar, Card, Text } from "react-native-paper";
 import ViewCenter from "../../components/ViewCenter";
 
 export default function UserStartPage() {
-  const { isLoaded } = useAuth();
+  const { isLoaded, userId } = useAuth();
   const { user } = useUser();
 
   if (!isLoaded) {
@@ -19,7 +19,6 @@ export default function UserStartPage() {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", padding: 12, gap: 4 }}>
-      <Text variant="displaySmall">Olá</Text>
       <Card>
         <Card.Title
           title={`${user?.firstName
@@ -37,6 +36,9 @@ export default function UserStartPage() {
             />
           )}
         />
+        <Card.Content>
+          <Text variant="bodyMedium">ID: {userId}</Text>
+        </Card.Content>
       </Card>
     </View>
   );
