@@ -1,7 +1,5 @@
-import { useAuth } from "@clerk/clerk-expo";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-import { collection, onSnapshot, query } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FlatList, View } from "react-native";
 import {
   ActivityIndicator,
@@ -12,46 +10,17 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
-import { db } from "../../services/firebaseConfig";
+import useGetSensors from "../../hooks/useGetSensors";
 
 interface Props {
   navigation: any;
 }
 
-interface ISensors {
-  sensorId?: string;
-  nome?: string;
-  umidadeMin?: number;
-}
-
 export default function CropStartPage({ navigation }: Props) {
   const theme = useTheme();
-  // const { loading, sensores } = useGetSensores();
-  const { userId } = useAuth();
-  const [sensors, setSensors] = useState<ISensors[] | null>(null);
+  const { sensors, loading } = useGetSensors();
 
-  function getListOfSensors() {
-    const collRef = collection(db, "Crops", `${userId}`, "sensores");
-    const q = query(collRef);
-    return onSnapshot(q, (querySnapshot) => {
-      const items: ISensors[] = [];
-      querySnapshot.forEach((doc) => {
-        items?.push({
-          sensorId: doc.id,
-          nome: doc.data()?.nome,
-          umidadeMin: doc.data()?.umidadeMin,
-        });
-        setSensors(items);
-      });
-    });
-  }
-
-  useEffect(() => {
-    const unsub = getListOfSensors();
-    return () => unsub();
-  }, []);
-
-  if (sensors?.length === 0) {
+  if (loading) {
     return (
       <View
         style={{

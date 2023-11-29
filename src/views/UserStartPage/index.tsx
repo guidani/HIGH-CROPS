@@ -2,19 +2,12 @@ import { useAuth, useUser } from "@clerk/clerk-expo";
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import { View } from "react-native";
-import {
-  ActivityIndicator,
-  Avatar,
-  Card,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { ActivityIndicator, Avatar, Card, Text } from "react-native-paper";
 import ViewCenter from "../../components/ViewCenter";
 
 export default function UserStartPage() {
-  const theme = useTheme();
-  const { isLoaded, userId } = useAuth();
-  const { isSignedIn, user } = useUser();
+  const { isLoaded } = useAuth();
+  const { user } = useUser();
 
   if (!isLoaded) {
     return (

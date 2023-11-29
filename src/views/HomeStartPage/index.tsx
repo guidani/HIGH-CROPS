@@ -4,11 +4,7 @@ import { View } from "react-native";
 import { Divider, List, Text, useTheme } from "react-native-paper";
 import UseFirebaseDatabase from "../../hooks/useFirebaseDatabase";
 
-interface Props {
-  navigation: any;
-}
-
-export default function StartPage({ navigation }: Props) {
+export default function StartPage() {
   const { umidade, umidadeAr, temperatura } = UseFirebaseDatabase();
   const theme = useTheme();
 
@@ -17,7 +13,6 @@ export default function StartPage({ navigation }: Props) {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        
       }}
     >
       <View
