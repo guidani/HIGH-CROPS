@@ -16,7 +16,9 @@ import {
   TextInput,
   useTheme,
 } from "react-native-paper";
+import useGetIrrigationStateByUserId from "../../hooks/useGetIrrigationStateByUserId";
 import UseGetSensorStateByUserId from "../../hooks/useGetSensorStateByUserId";
+import useSetIrrigationStateByUserId from "../../hooks/useSetIrrigationStateByUserId";
 import UseSetSensorStateByUserId from "../../hooks/useSetSensorStateByUserId";
 import GetSingleCrop from "../../services/getSingleCrop";
 import UpdateCrop from "../../services/updateCrop";
@@ -32,14 +34,21 @@ export default function CropsDetails({ route }: Props) {
   const navigat = useNavigation();
   const { itemId } = route.params;
   const { userId } = useAuth();
+  //
   const { ativado } = UseGetSensorStateByUserId(itemId);
   const { setRealTimeDatabase } = UseSetSensorStateByUserId(itemId);
+  //
+  const irrigationState = useGetIrrigationStateByUserId(itemId);
+  const { setRealTimeDatabaseIrrigationState } =
+    useSetIrrigationStateByUserId(itemId);
 
   const theme = useTheme();
   const [name, setName] = useState<string>("");
   const [umidadeMin, setUmidadeMin] = useState<number>(0);
   //
-  const [switchSensorA, setSwitchSensorA] = useState(false);
+  const [switchSensorState, setSwitchSensorState] = useState(false);
+  const [switchIrrigationState, setSwitchIrrigationState] = useState(false);
+  //
   const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
   const [noNameError, setNoNameError] = useState(false);
   const [errorOnSave, setErrorOnSave] = useState(false);
@@ -47,10 +56,12 @@ export default function CropsDetails({ route }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorOnLoad, setErrorOnLoad] = useState(false);
 
-  async function changeSwitchValue() {
-    //setSwitchSensorA(!switchSensorA);
+  async function changeSwitchSensorValue() {
     return await setRealTimeDatabase();
-    //TODO - alterar também o valor no realtimeDatabase;
+  }
+
+  async function changeSwitchIrrigationValue() {
+    return await setRealTimeDatabaseIrrigationState();
   }
 
   async function updateCropToDataBase() {
@@ -65,7 +76,8 @@ export default function CropsDetails({ route }: Props) {
         setSuccessOnSave(true);
       }
       //
-      setSwitchSensorA(ativado!)
+      setSwitchSensorState(ativado!);
+      setSwitchIrrigationState(irrigationState.ativado!);
     } catch (error) {
       setErrorOnSave(true);
     } finally {
@@ -81,7 +93,7 @@ export default function CropsDetails({ route }: Props) {
       setName(resp["nome"]);
       //@ts-ignore
       setUmidadeMin(resp["umidadeMin"]);
-      setSwitchSensorA(ativado!);
+      setSwitchSensorState(ativado!);
     } catch (error) {
       setIsLoading(false);
       setErrorOnLoad(true);
@@ -180,11 +192,32 @@ export default function CropsDetails({ route }: Props) {
           </Chip>
         </View>
         <Divider style={{ marginVertical: 4 }} />
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: 'center' }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Text>Ativar / Desativar sensor</Text>
-          <Switch value={ativado!} onValueChange={changeSwitchValue} />
+          <Switch value={ativado!} onValueChange={changeSwitchSensorValue} />
+        </View>
+        <Divider style={{ marginVertical: 4 }} />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text>Ativar / Desativar Irrigação automática</Text>
+          <Switch
+            value={irrigationState.ativado!}
+            onValueChange={changeSwitchIrrigationValue}
+          />
         </View>
       </ScrollView>
+
       <FAB
         animated={false}
         icon={(props: IconProps & { color: string }) => (

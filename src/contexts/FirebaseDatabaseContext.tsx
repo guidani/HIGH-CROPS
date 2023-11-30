@@ -31,10 +31,12 @@ export default function FirebaseDatabaseContextProvider({
   async function setRealTimeDatabase() {
     await set(ref(rtdb, "users/" + userId + "/sensores"), {
       sensorA: {
+        irrigation: {v: true},
         ativado: { v: false },
         umidadeSolo: 0,
       },
       sensorB: {
+        irrigation: {v: true},
         ativado: { v: false },
         umidadeSolo: 0,
       },
