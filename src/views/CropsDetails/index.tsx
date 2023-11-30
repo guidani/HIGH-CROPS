@@ -11,10 +11,13 @@ import {
   FAB,
   Portal,
   Snackbar,
+  Switch,
   Text,
   TextInput,
   useTheme,
 } from "react-native-paper";
+import UseGetSensorStateByUserId from "../../hooks/useGetSensorStateByUserId";
+import UseSetSensorStateByUserId from "../../hooks/useSetSensorStateByUserId";
 import GetSingleCrop from "../../services/getSingleCrop";
 import UpdateCrop from "../../services/updateCrop";
 import { CropType } from "../../types/CropType";
@@ -29,17 +32,26 @@ export default function CropsDetails({ route }: Props) {
   const navigat = useNavigation();
   const { itemId } = route.params;
   const { userId } = useAuth();
+  const { ativado } = UseGetSensorStateByUserId(itemId);
+  const { setRealTimeDatabase } = UseSetSensorStateByUserId(itemId);
 
   const theme = useTheme();
   const [name, setName] = useState<string>("");
   const [umidadeMin, setUmidadeMin] = useState<number>(0);
   //
+  const [switchSensorA, setSwitchSensorA] = useState(false);
   const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
   const [noNameError, setNoNameError] = useState(false);
   const [errorOnSave, setErrorOnSave] = useState(false);
   const [successOnSave, setSuccessOnSave] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorOnLoad, setErrorOnLoad] = useState(false);
+
+  async function changeSwitchValue() {
+    //setSwitchSensorA(!switchSensorA);
+    return await setRealTimeDatabase();
+    //TODO - alterar também o valor no realtimeDatabase;
+  }
 
   async function updateCropToDataBase() {
     try {
@@ -52,6 +64,8 @@ export default function CropsDetails({ route }: Props) {
       if (resp) {
         setSuccessOnSave(true);
       }
+      //
+      setSwitchSensorA(ativado!)
     } catch (error) {
       setErrorOnSave(true);
     } finally {
@@ -67,6 +81,7 @@ export default function CropsDetails({ route }: Props) {
       setName(resp["nome"]);
       //@ts-ignore
       setUmidadeMin(resp["umidadeMin"]);
+      setSwitchSensorA(ativado!);
     } catch (error) {
       setIsLoading(false);
       setErrorOnLoad(true);
@@ -163,6 +178,11 @@ export default function CropsDetails({ route }: Props) {
           <Chip mode="outlined">
             <Text>{umidadeMin}</Text>
           </Chip>
+        </View>
+        <Divider style={{ marginVertical: 4 }} />
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: 'center' }}>
+          <Text>Ativar / Desativar sensor</Text>
+          <Switch value={ativado!} onValueChange={changeSwitchValue} />
         </View>
       </ScrollView>
       <FAB
