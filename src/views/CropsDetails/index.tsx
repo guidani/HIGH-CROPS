@@ -24,6 +24,7 @@ import GetSingleCrop from "../../services/getSingleCrop";
 import UpdateCrop from "../../services/updateCrop";
 import { CropType } from "../../types/CropType";
 import { IconProps } from "../../types/IconProps";
+import UpdateUmidadeMinRTDB from "../../services/updateUmidadeMinRTDB";
 
 interface Props {
   navigation: any;
@@ -71,6 +72,9 @@ export default function CropsDetails({ route }: Props) {
         nome: name,
         umidadeMin: umidadeMin,
       };
+      //TODO - update no RealTime Database
+      await UpdateUmidadeMinRTDB(userId!, itemId, umidadeMin);
+      // Update no firestore
       const resp = await UpdateCrop(crop, itemId, userId!);
       if (resp) {
         setSuccessOnSave(true);
