@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/clerk-expo";
-import { onValue, ref, set } from "firebase/database";
+import { child, get, onValue, ref, set } from "firebase/database";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useEffect, useState } from "react";
 import { db, rtdb } from "../services/firebaseConfig";
@@ -29,22 +29,30 @@ export default function FirebaseDatabaseContextProvider({
   const { userId } = useAuth();
 
   async function setRealTimeDatabase() {
-    await set(ref(rtdb, "users/" + userId + "/sensores"), {
-      sensorA: {
-        irrigation: { v: true },
-        ativado: { v: false },
-        irrigationStarted: { v: false },
-        umidadeSolo: 0,
-        umidadeMin: { v: 0 },
-      },
-      sensorB: {
-        irrigation: { v: true },
-        ativado: { v: false },
-        irrigationStarted: { v: false },
-        umidadeSolo: 0,
-        umidadeMin: { v: 0 },
-      },
-    });
+    await get(child(ref(rtdb), `users/${userId}`))
+      .then((snapshot) => {
+        if (!snapshot.exists()) {
+          console.log(`Não foi encontrado ${userId} no RTDB`);
+          console.log(`Inserindo dados...`);
+          set(ref(rtdb, "users/" + userId + "/sensores"), {
+            sensorA: {
+              irrigation: { v: true },
+              ativado: { v: false },
+              irrigationStarted: { v: false },
+              umidadeSolo: 0,
+              umidadeMin: { v: 0 },
+            },
+            sensorB: {
+              irrigation: { v: true },
+              ativado: { v: false },
+              irrigationStarted: { v: false },
+              umidadeSolo: 0,
+              umidadeMin: { v: 0 },
+            },
+          });
+        }
+      })
+      .catch((error) => console.log(error));
   }
 
   async function setFiresotreInitalData() {
@@ -97,9 +105,7 @@ export default function FirebaseDatabaseContextProvider({
   }, []);
 
   return (
-    <FirebaseDatabaseContext.Provider
-      value={{ umidadeAr, temperatura }}
-    >
+    <FirebaseDatabaseContext.Provider value={{ umidadeAr, temperatura }}>
       {children}
     </FirebaseDatabaseContext.Provider>
   );
