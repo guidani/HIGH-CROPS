@@ -5,7 +5,7 @@ import { Divider, List, Text, useTheme } from "react-native-paper";
 import UseFirebaseDatabase from "../../hooks/useFirebaseDatabase";
 
 export default function StartPage() {
-  const { umidade, umidadeAr, temperatura } = UseFirebaseDatabase();
+  const { umidadeAr, temperatura } = UseFirebaseDatabase();
   const theme = useTheme();
 
   return (
@@ -27,7 +27,7 @@ export default function StartPage() {
         <Text variant="bodyLarge">Visão Geral</Text>
       </View>
       <Divider />
-      <List.Item
+      {/* <List.Item
         title="Umidade do Solo"
         style={{
           paddingHorizontal: 10,
@@ -40,7 +40,7 @@ export default function StartPage() {
           />
         )}
         right={(props) => <Text>{umidade}</Text>}
-      />
+      /> */}
       <List.Item
         title="Temperatura"
         style={{

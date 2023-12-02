@@ -9,13 +9,13 @@ interface IFirebaseDatabaseContextProvider {
 }
 
 interface IFirebaseDatabaseContext {
-  umidade: number | null;
+  // umidade: number | null;
   umidadeAr: number | null;
   temperatura: number | null;
 }
 
 export const FirebaseDatabaseContext = createContext<IFirebaseDatabaseContext>({
-  umidade: null,
+  // umidade: null,
   umidadeAr: null,
   temperatura: null,
 });
@@ -23,7 +23,7 @@ export const FirebaseDatabaseContext = createContext<IFirebaseDatabaseContext>({
 export default function FirebaseDatabaseContextProvider({
   children,
 }: IFirebaseDatabaseContextProvider) {
-  const [umidade, setUmidade] = useState<number | null>(null);
+  // const [umidade, setUmidade] = useState<number | null>(null);
   const [umidadeAr, setUmidadeAr] = useState<number | null>(null);
   const [temperatura, setTemperatura] = useState<number | null>(null);
   const { userId } = useAuth();
@@ -33,12 +33,14 @@ export default function FirebaseDatabaseContextProvider({
       sensorA: {
         irrigation: { v: true },
         ativado: { v: false },
+        irrigationStarted: { v: false },
         umidadeSolo: 0,
         umidadeMin: { v: 0 },
       },
       sensorB: {
         irrigation: { v: true },
         ativado: { v: false },
+        irrigationStarted: { v: false },
         umidadeSolo: 0,
         umidadeMin: { v: 0 },
       },
@@ -69,10 +71,10 @@ export default function FirebaseDatabaseContextProvider({
   }
 
   useEffect(() => {
-    const unsubscribeUmidade = onValue(ref(rtdb, "umidade"), (snapshot) => {
-      const val = snapshot.val();
-      setUmidade(val);
-    });
+    // const unsubscribeUmidade = onValue(ref(rtdb, "umidade"), (snapshot) => {
+    //   const val = snapshot.val();
+    //   setUmidade(val);
+    // });
 
     const unsubscribeUmidadeAr = onValue(ref(rtdb, "umidadear"), (snapshot) => {
       const val = snapshot.val();
@@ -88,7 +90,7 @@ export default function FirebaseDatabaseContextProvider({
     );
 
     return () => {
-      unsubscribeUmidade();
+      // unsubscribeUmidade();
       unsubscribeUmidadeAr();
       unsubscribeTemperatura();
     };
@@ -96,7 +98,7 @@ export default function FirebaseDatabaseContextProvider({
 
   return (
     <FirebaseDatabaseContext.Provider
-      value={{ umidade, umidadeAr, temperatura }}
+      value={{ umidadeAr, temperatura }}
     >
       {children}
     </FirebaseDatabaseContext.Provider>
