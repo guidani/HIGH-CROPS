@@ -22,9 +22,9 @@ import useSetIrrigationStateByUserId from "../../hooks/useSetIrrigationStateByUs
 import UseSetSensorStateByUserId from "../../hooks/useSetSensorStateByUserId";
 import GetSingleCrop from "../../services/getSingleCrop";
 import UpdateCrop from "../../services/updateCrop";
+import UpdateUmidadeMinRTDB from "../../services/updateUmidadeMinRTDB";
 import { CropType } from "../../types/CropType";
 import { IconProps } from "../../types/IconProps";
-import UpdateUmidadeMinRTDB from "../../services/updateUmidadeMinRTDB";
 
 interface Props {
   navigation: any;
@@ -35,10 +35,10 @@ export default function CropsDetails({ route }: Props) {
   const navigat = useNavigation();
   const { itemId } = route.params;
   const { userId } = useAuth();
-  //
+
   const { ativado } = UseGetSensorStateByUserId(itemId);
   const { setRealTimeDatabase } = UseSetSensorStateByUserId(itemId);
-  //
+
   const irrigationState = useGetIrrigationStateByUserId(itemId);
   const { setRealTimeDatabaseIrrigationState } =
     useSetIrrigationStateByUserId(itemId);
@@ -46,10 +46,10 @@ export default function CropsDetails({ route }: Props) {
   const theme = useTheme();
   const [name, setName] = useState<string>("");
   const [umidadeMin, setUmidadeMin] = useState<number>(0);
-  //
+
   const [switchSensorState, setSwitchSensorState] = useState(false);
   const [switchIrrigationState, setSwitchIrrigationState] = useState(false);
-  //
+
   const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false);
   const [noNameError, setNoNameError] = useState(false);
   const [errorOnSave, setErrorOnSave] = useState(false);
@@ -72,14 +72,14 @@ export default function CropsDetails({ route }: Props) {
         nome: name,
         umidadeMin: umidadeMin,
       };
-      //TODO - update no RealTime Database
+
       await UpdateUmidadeMinRTDB(userId!, itemId, umidadeMin);
-      // Update no firestore
+
       const resp = await UpdateCrop(crop, itemId, userId!);
       if (resp) {
         setSuccessOnSave(true);
       }
-      //
+
       setSwitchSensorState(ativado!);
       setSwitchIrrigationState(irrigationState.ativado!);
     } catch (error) {

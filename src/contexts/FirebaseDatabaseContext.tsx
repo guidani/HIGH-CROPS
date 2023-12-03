@@ -9,13 +9,11 @@ interface IFirebaseDatabaseContextProvider {
 }
 
 interface IFirebaseDatabaseContext {
-  // umidade: number | null;
   umidadeAr: number | null;
   temperatura: number | null;
 }
 
 export const FirebaseDatabaseContext = createContext<IFirebaseDatabaseContext>({
-  // umidade: null,
   umidadeAr: null,
   temperatura: null,
 });
@@ -31,8 +29,6 @@ export default function FirebaseDatabaseContextProvider({
     await get(child(ref(rtdb), `users/${userId}`))
       .then((snapshot) => {
         if (!snapshot.exists()) {
-          console.log(`Não foi encontrado ${userId} no RTDB`);
-          console.log(`Inserindo dados...`);
           set(ref(rtdb, "users/" + userId + "/sensores"), {
             sensorA: {
               irrigation: { v: true },
@@ -51,7 +47,7 @@ export default function FirebaseDatabaseContextProvider({
           });
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   }
 
   async function setFiresotreInitalData() {
