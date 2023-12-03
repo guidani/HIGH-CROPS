@@ -12,22 +12,6 @@ import ShowFlatListHistoryBySensor from "../../components/ShowFlatListHistoryByS
 import useGetHistory from "../../hooks/useGetHistory";
 export default function History() {
   const [segmentedButtonvalue, setSegmentedButtonvalue] = useState("");
-  const { history, loading } = useGetHistory(segmentedButtonvalue);
-
-  if (loading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#ffffff",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <ActivityIndicator animating={true} color={MD2Colors.green400} />
-      </View>
-    );
-  }
 
   return (
     <View

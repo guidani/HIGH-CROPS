@@ -1,11 +1,14 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { View } from "react-native";
-import { Divider, List, Text, useTheme } from "react-native-paper";
+import { Divider, Text, useTheme } from "react-native-paper";
+import CustomListItemWithIconAndRight from "../../components/CustomListItemWithIconAndRight";
 import UseFirebaseDatabase from "../../hooks/useFirebaseDatabase";
+import useGetUmidadeSoloBySensorId from "../../hooks/useGetUmidadeSoloBySensorId";
 
 export default function StartPage() {
   const { umidadeAr, temperatura } = UseFirebaseDatabase();
+  const umidadeSensorA = useGetUmidadeSoloBySensorId('sensorA');
+  const umidadeSensorB = useGetUmidadeSoloBySensorId('sensorB');
   const theme = useTheme();
 
   return (
@@ -27,48 +30,10 @@ export default function StartPage() {
         <Text variant="bodyLarge">Visão Geral</Text>
       </View>
       <Divider />
-      {/* <List.Item
-        title="Umidade do Solo"
-        style={{
-          paddingHorizontal: 10,
-        }}
-        left={(props) => (
-          <MaterialCommunityIcons
-            name="water-percent"
-            size={24}
-            color="black"
-          />
-        )}
-        right={(props) => <Text>{umidade}</Text>}
-      /> */}
-      <List.Item
-        title="Temperatura"
-        style={{
-          paddingHorizontal: 10,
-        }}
-        left={(props) => (
-          <MaterialCommunityIcons
-            name="temperature-celsius"
-            size={24}
-            color="black"
-          />
-        )}
-        right={(props) => <Text>{temperatura}</Text>}
-      />
-      <List.Item
-        title="Umidade do Ar"
-        style={{
-          paddingHorizontal: 10,
-        }}
-        left={(props) => (
-          <MaterialCommunityIcons
-            name="water-percent"
-            size={24}
-            color="black"
-          />
-        )}
-        right={(props) => <Text>{umidadeAr}</Text>}
-      />
+      <CustomListItemWithIconAndRight title="Temperatura" iconName={"temperature-celsius"} rightValue={temperatura} />
+      <CustomListItemWithIconAndRight title="Umidade do Ar" iconName={"water-percent"} rightValue={umidadeAr} />
+      <CustomListItemWithIconAndRight title="Umidade do solor (sensor A)" iconName={"water-percent"} rightValue={umidadeSensorA.umidadeSolo} />
+      <CustomListItemWithIconAndRight title="Umidade do solor (sensor B)" iconName={"water-percent"} rightValue={umidadeSensorB.umidadeSolo} />
     </View>
   );
 }
