@@ -17,7 +17,6 @@ export default async function GetSingleCrop(userId: string, cropId: string) {
     if (docSnap.exists()) {
       return docSnap.data();
     } else {
-      console.log("Nada encontrado!");
       return;
     }
   } catch (error) {

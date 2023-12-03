@@ -2,16 +2,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { View } from "react-native";
 import {
-  ActivityIndicator,
   Divider,
-  MD2Colors,
   SegmentedButtons,
   Text
 } from "react-native-paper";
 import ShowFlatListHistoryBySensor from "../../components/ShowFlatListHistoryBySensor";
-import useGetHistory from "../../hooks/useGetHistory";
 export default function History() {
-  const [segmentedButtonvalue, setSegmentedButtonvalue] = useState("");
+  const [segmentedButtonvalue, setSegmentedButtonvalue] = useState("sensorA");
 
   return (
     <View
@@ -44,7 +41,7 @@ export default function History() {
           { value: "sensorB", label: "Sensor B" },
         ]}
       />
-      {segmentedButtonvalue != "" && <ShowFlatListHistoryBySensor valor={segmentedButtonvalue} />}
+      {<ShowFlatListHistoryBySensor valor={segmentedButtonvalue} />}
     </View>
   );
 }
