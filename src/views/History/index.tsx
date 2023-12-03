@@ -1,21 +1,18 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { FlatList, View } from "react-native";
+import React, { useState } from "react";
+import { View } from "react-native";
 import {
   ActivityIndicator,
   Divider,
-  List,
   MD2Colors,
-  Text,
-  useTheme,
+  SegmentedButtons,
+  Text
 } from "react-native-paper";
+import ShowFlatListHistoryBySensor from "../../components/ShowFlatListHistoryBySensor";
 import useGetHistory from "../../hooks/useGetHistory";
-import { useAuth } from "@clerk/clerk-expo";
 export default function History() {
-  const theme = useTheme;
-  const navigation = useNavigation;
-  const { history, loading } = useGetHistory();
+  const [segmentedButtonvalue, setSegmentedButtonvalue] = useState("");
+  const { history, loading } = useGetHistory(segmentedButtonvalue);
 
   if (loading) {
     return (
@@ -52,36 +49,18 @@ export default function History() {
         <Text variant="bodyLarge">Histórico de irrigações</Text>
       </View>
       <Divider />
-      <FlatList
-        data={history}
-        ItemSeparatorComponent={() => <Divider />}
-        ListEmptyComponent={() => (
-          <Text variant="bodyLarge" style={{ paddingHorizontal: 10 }}>
-            Nada encontrado.
-          </Text>
-        )}
-        renderItem={({ item }) => {
-          return (
-            <List.Item
-              key={item.id}
-              title={`Hortaliça: ${item.cropName
-                ?.charAt(0)
-                .toUpperCase()}${item.cropName?.slice(1)}`}
-              description={() => (
-                <View>
-                  <Text>
-                    Data da irrigação:{" "}
-                    {item.DateTime?.toDate().toLocaleString("pt-br", {
-                      timeZone: "GMT",
-                    })}
-                  </Text>
-                  <Text>Umidade do solo: {item.umidadeSolo}</Text>
-                </View>
-              )}
-            />
-          );
-        }}
+      <SegmentedButtons
+        value={segmentedButtonvalue}
+        onValueChange={setSegmentedButtonvalue}
+        buttons={[
+          {
+            value: "sensorA",
+            label: "Sensor A",
+          },
+          { value: "sensorB", label: "Sensor B" },
+        ]}
       />
+      {segmentedButtonvalue != "" && <ShowFlatListHistoryBySensor valor={segmentedButtonvalue} />}
     </View>
   );
 }
