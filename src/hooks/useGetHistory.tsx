@@ -1,34 +1,25 @@
-import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../services/firebaseConfig";
 import { IHistory } from "../types/IHistory";
+import { useAuth } from "@clerk/clerk-expo";
+import { onValue, ref } from "firebase/database";
+import { rtdb } from "../services/firebaseConfig";
 
 export default function useGetHistory() {
-  const [history, setHistory] = useState<IHistory[] | null>(null);
-  const [loading, setLoading] = useState<boolean | null>(false);
-
-  function getHistory() {
-    const historyRef = collection(db, "History");
-    const q = query(historyRef);
-    return onSnapshot(q, (querySnapshot) => {
-      setLoading(true);
-      const items: IHistory[] = [];
-      querySnapshot.forEach((doc) => {
-        items.push({
-          id: doc.id,
-          cropName: doc.data().CropName,
-          DateTime: doc.data()?.DateTime,
-          umidadeSolo: doc.data().UmidadeSolo,
-        });
-        setHistory(items);
-      });
-      setLoading(false);
-    });
-  }
+  const [history, setHistory] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const { userId } = useAuth();
 
   useEffect(() => {
-    const unsubscribeHistory = getHistory();
-    return () => unsubscribeHistory();
+    const valueRef = ref(rtdb, `users/${userId}/sensores/sensorA/irrigationState`);
+    const unsubscribe = onValue(valueRef, (snapshot) => {
+      if(snapshot.exists()){
+        snapshot.forEach( doc => {
+          console.log(doc.val())
+        })
+      }
+      
+    });
+    return () => unsubscribe();
   }, []);
 
   return { history, loading };

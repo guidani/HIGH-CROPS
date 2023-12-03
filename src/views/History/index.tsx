@@ -11,6 +11,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import useGetHistory from "../../hooks/useGetHistory";
+import { useAuth } from "@clerk/clerk-expo";
 export default function History() {
   const theme = useTheme;
   const navigation = useNavigation;
@@ -56,7 +57,7 @@ export default function History() {
         ItemSeparatorComponent={() => <Divider />}
         ListEmptyComponent={() => (
           <Text variant="bodyLarge" style={{ paddingHorizontal: 10 }}>
-            Nada encontrado. Adicione uma horta pressionando o botão abaixo.
+            Nada encontrado.
           </Text>
         )}
         renderItem={({ item }) => {
